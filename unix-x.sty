@@ -1,0 +1,339 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Written by Per Foreby <per.foreby@kansli.lth.se> 1995-1999
+%
+% Permission is granted to non-profit organisations to use this
+% code any way you want, as long as you don't pretend you wrote it!
+%
+% Credit where credit is due!
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{unix-x}
+
+\newif\iffinal                  % initially false
+\newif\ifgray                   % initially false
+\newif\ifhtml                   % initially false
+
+\DeclareOption{nogray}{\grayfalse}
+\DeclareOption{gray}{\graytrue}
+\DeclareOption{draft}{\finalfalse}
+\DeclareOption{final}{\finaltrue}
+\DeclareOption{html}{\htmltrue}
+\DeclareOption{nohtml}{\htmlfalse}
+\ExecuteOptions{gray}
+\ExecuteOptions{final}
+\ExecuteOptions{nohtml}
+\ProcessOptions
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% pdftex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{ifpdf}
+
+\ifpdf
+  \pdfoutput=1           
+  \pdftrue               %% pdfLaTeX is executed
+\else
+  \pdfoutput=0
+  \pdffalse              %% normal LaTeX is executed
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Print "Utkast"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\iffinal
+\else
+\special{!userdict begin /bop-hook{gsave 200 30 translate
+    65 rotate /Times-Roman findfont 200 scalefont setfont
+    0 0 moveto 0.98 setgray (UTKAST) show grestore}def end}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Page measurements
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\addtolength{\textwidth}{20mm}
+\addtolength{\oddsidemargin}{2mm}
+\addtolength{\evensidemargin}{-22mm}
+\addtolength{\topmargin}{-25mm}
+\addtolength{\headsep}{-10pt}
+\addtolength{\textheight}{60mm}
+%\setlength{\columnsep}{5mm}
+% Don't use a visible column separator when running
+% latex2html. Otherwise cropping of pictures won't work.
+\newlength{\my@colseprule}
+\ifhtml
+  \setlength{\my@colseprule}{0pt}
+\else
+  \setlength{\my@colseprule}{.4pt}
+\fi
+\setlength{\columnseprule}{\my@colseprule}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{\medskipamount}
+\setlength{\unitlength}{1mm}          % Skalfaktor för pictureomgivningen.
+\renewcommand{\baselinestretch}{0.95}
+
+% Change to avoid columnseprule and page headers on empty pages.
+\def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
+  \thispagestyle{empty}\setlength{\columnseprule}{0pt}\hbox{}\newpage%
+  \if@twocolumn\hbox{}\newpage\fi%
+  \setlength{\columnseprule}{\my@colseprule}\fi\fi}
+
+\renewcommand\appendixname{Appendix}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fonts
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\sfdefault}{pag}          % Avant garde
+\renewcommand{\rmdefault}{ptm}          % Times
+\renewcommand{\ttdefault}{pcr}          % Courier
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Toc should be multicolumn (and no uppercase in headings)
+% Also, make list of figures and tables sections instead of chapters.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand\tableofcontents{%
+  \setcounter{tocdepth}{2}%
+  \chapter*{\contentsname\@mkboth{\contentsname}{\contentsname}}%
+  \@starttoc{toc}%
+  \section*{\listfigurename}%
+  \@starttoc{lof}%
+  \section*{\listtablename}%
+  \@starttoc{lot}%
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Chapter and section headers redefined to use sans serif fonts and
+% to be slightly larger. (Original definitions from book.cls)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\@makechapterhead#1{%
+  \vspace*{50\p@}%
+  {\parindent \z@ \raggedright \reset@font
+    \ifnum \c@secnumdepth >\m@ne
+       \if@mainmatter
+         \huge\sffamily\bfseries \@chapapp{} \thechapter
+         \par
+         \vskip 20\p@
+       \fi
+       \fi
+    \Huge \sffamily\bfseries #1\par
+    \nobreak
+    \vskip 40\p@
+  }}
+\def\@makeschapterhead#1{%
+  \vspace*{50\p@}%
+  {\parindent \z@ \raggedright
+    \reset@font
+    \Huge \sffamily\bfseries  #1\par
+    \nobreak
+    \vskip 40\p@
+  }}
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+  {-3.5ex \@plus -1ex \@minus -.2ex}{2.3ex \@plus.2ex}%
+  {\reset@font\LARGE\sffamily\bfseries}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+  {-3.25ex\@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}%
+  {\reset@font\Large\sffamily\bfseries}}
+
+% Don't number subsections, and indent them more in the toc
+\setcounter{secnumdepth}{1}
+\renewcommand\l@subsection{\@dottedtocline{2}{4.8em}{3.2em}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Page headers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{fancyheadings}
+\pagestyle{fancyplain}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{#1}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+\newcommand{\SB}[1]{\textsf{\textbf{#1}}}
+\lhead[\fancyplain{\SB{\thepage}}{\SB{\thepage}}]
+      {\fancyplain{}{\SB{\rightmark}}}
+\rhead[\fancyplain{}{\SB{\leftmark}}]
+      {\fancyplain{\SB{\thepage}}{\SB{\thepage}}}
+\cfoot{}
+
+% \hours prints HOUR:MINUTE
+\newcount\m \newcount\n
+\def\hours{\n=\time \divide\n 60
+  \m=-\n \multiply\m 60 \advance\m \time
+  \twodigits\n:\twodigits\m}
+\def\twodigits#1{\ifnum #1<10 0\fi \number#1}
+
+\iffinal\else\chead{\textbf{%
+    Korrekturex --- ej för tryckning --- \today\ \hours}}\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make an evironment "exercise". It will print a theorem like exercise
+% and optionally use an "answer" environment to append the answer to
+% the file \jobname.ans, which will be included in an appendix.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{color,verbatim,theorem}
+\definecolor{@gray}{gray}{.80}
+% This code is originally from color.sty. It is modified to allow for
+% use in environments.
+\long\def\Begin@colpara{%
+  \par\noindent\setbox\z@\vbox\bgroup\kern\fboxsep\hbox\bgroup\kern\fboxsep%
+  \vtop\bgroup\hsize=\linewidth\advance\hsize-2\fboxsep}
+
+\def\End@colpara#1{%
+ \egroup\kern\fboxsep\egroup\kern\fboxsep\egroup%
+ \ifgray{\@declaredcolor{#1}\color@block{\wd\z@}{\ht\z@}{\dp\z@}}\fi%
+ \box\z@\par}
+
+% This stuff uses the enhanced theorem style
+\theoremstyle{break}
+\theorembodyfont{\upshape}
+\newtheorem{ex@theorem}{Övning}[chapter]
+\setlength{\theorempreskipamount}{0pt}
+\setlength{\theorempostskipamount}{0.2ex}
+\newenvironment{exercise}{%
+  \Begin@colpara%
+  \begin{ex@theorem}%
+}{%
+  \end{ex@theorem}%
+  \End@colpara{@gray}%
+  \vspace{-1ex}%
+}
+
+\newwrite\verbatim@out
+\immediate\openout\verbatim@out\jobname.ans
+\edef\@tempa{\immediate\write\verbatim@out{\string\begin{enumerate}}}\@tempa
+
+\newenvironment{answer}{%
+  \@bsphack%
+  \edef\@tempa{\immediate\write\verbatim@out{%
+      \string\begin{printanswer}{\theex@theorem}}}\@tempa%
+  \let\do\@makeother\dospecials\catcode`\^^M\active%
+  \def\verbatim@processline{\immediate\write\verbatim@out{\the\verbatim@line}}%
+  \verbatim@start%
+}{%
+  \edef\@tempa{\immediate\write\verbatim@out{\string\end{printanswer}}}\@tempa%
+  \@esphack
+}
+
+\newenvironment{printanswer}[1]{\item[\textbf{#1}]}{}
+
+\newcommand{\answers}{
+  \edef\@tempa{\immediate\write\verbatim@out{\string\end{enumerate}}}\@tempa
+  \immediate\closeout\verbatim@out%
+  \chapter{Lösningar till övningsuppgifterna}%
+  \input{\jobname.ans}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Index macros
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\rmindex}[1]{#1\index{#1}}
+\newcommand{\emindex}[1]{\emph{#1}\index{#1}}
+\newcommand{\ttindex}[1]{\texttt{#1}\index{#1@\texttt{#1}}}
+\newcommand{\hidettindex}[1]{\index{#1@\texttt{#1}}}
+
+\def\seename{se}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Use multicols to print index in multiple columns.
+% Heavily inspired from the doc package.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{multicol}
+\renewenvironment{theindex}
+  {\begin{multicols}{4}[\index@prologue]%
+    \IndexParms \let\item\@idxitem \ignorespaces}%
+  {\end{multicols}}
+
+\long\def\IndexPrologue#1{\@bsphack\def\index@prologue{#1}\@esphack}
+\def\index@prologue{\chapter*{\indexname}%
+  \addcontentsline{toc}{chapter}{\indexname}%
+  \markboth{\indexname}{\indexname}%
+}
+\def\IndexParms{%
+  \parindent \z@
+  \columnsep 15pt
+  \setlength{\columnseprule}{\my@colseprule}
+  \parskip 0pt plus 1pt
+  \rightskip 15pt
+  \mathsurround \z@
+  \parfillskip=-15pt
+  \small
+  \def\@idxitem{\par\hangindent 30pt}%
+  \def\subitem{\@idxitem\hspace*{15pt}}%
+  \def\subsubitem{\@idxitem\hspace*{25pt}}%
+  \def\indexspace{\par\vspace{10pt plus 2pt minus 3pt}}%
+  \def\efill{\hfill\nopagebreak}%
+  \def\dotfill{\leaders\hbox to.6em{\hss .\hss}\hskip\z@ plus  1fill}%
+  \def\dotfil{\leaders\hbox to.6em{\hss .\hss}\hfil}%
+  \def\pfill{\unskip~\dotfill\penalty500\strut\nobreak
+    \dotfil~\ignorespaces}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Misc
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Used for filenames in directory graphs
+\newcommand{\ST}[1]{\texttt{\small #1}}
+
+% Description and itemize with different measurements.
+\renewenvironment{description}{%
+  \list{}{\labelwidth=16mm\leftmargin=20mm\partopsep=0pt\parskip=0pt%
+    \parsep=0pt\itemsep=0pt\topsep=5pt\let\makelabel\descriptionlabel}}
+{\endlist}
+\renewcommand\descriptionlabel[1]{\hspace\labelsep
+                                \normalfont\bfseries #1\hfill}
+\newenvironment{Xdescription}{%
+  \list{}{\labelwidth=5mm\leftmargin=8mm\partopsep=0pt\parskip=0pt%
+    \parsep=0pt\itemsep=0pt\topsep=5pt\let\makelabel\descriptionlabel}}
+{\endlist}
+\newcommand\Xdescriptionlabel[1]{\hspace\labelsep
+                                \normalfont\bfseries #1\hfill}
+\newenvironment{refdescription}{%
+  \list{}{\labelwidth=26mm\leftmargin=26mm\partopsep=0pt\parskip=0pt%
+    \parsep=0pt\itemsep=0pt\topsep=5pt\let\makelabel\refdescriptionlabel}}
+{\endlist}
+\newcommand\refdescriptionlabel[1]{\hspace\labelsep
+                                \normalfont #1\hfill}
+\renewenvironment{itemize}{%
+  \list{$\bullet$}{\labelwidth=2mm\leftmargin=7mm\partopsep=0pt\parskip=0pt%
+    \parsep=0pt\itemsep=0pt\topsep=5pt}}
+{\endlist}
+% Similar to quote but uses small tt font and has less surrounding space
+\newenvironment{ttquote}{%
+  \list{}{\leftmargin=5mm\partopsep=0pt\parskip=0pt\parsep=0pt%
+    \itemsep=0pt\topsep=5pt}\item[]\ttfamily\small}
+{\endlist\vspace{-3pt}}
+
+\newcommand{\Sp}{\ifhmode\hspace{.3em}\fi} % Don't add space to beg of paragr.
+
+\newcommand{\Ctrl}[1]{$\langle$\textrm{\textsc{control-#1}}$\rangle$}
+
+\newcommand{\Prog}{\@ifstar\@oprog\@prog}
+\newcommand{\@prog}[1]{\Sp\texttt{#1}\Sp}
+\newcommand{\@oprog}[1]{\Sp$[$\texttt{#1}$]$\Sp}
+
+\newcommand{\Arg}{\@ifstar\@oarg\@arg}
+\newcommand{\@arg}[2][]{\texttt{#1}\@@rg{#2}\Sp}
+\newcommand{\@oarg}[2][]{$[$\texttt{#1}\@@rg{#2}$]$\Sp}
+\newcommand{\@@rg}[1]{$\langle$\textit{#1}$\rangle$}
+
+\newcommand{\Marg}[1]{\@@rg{#1}...\Sp}
+
+\RequirePackage{alltt,fancybox}
+\cornersize*{10pt}
+\newlength{\my@len}
+\newenvironment{example}{%
+  \par
+  \setlength{\my@len}{\linewidth}%
+  \addtolength{\my@len}{-2\fboxsep}%
+  \addtolength{\my@len}{-2\fboxrule}%
+  \begin{Sbox}%
+    \begin{minipage}{\my@len}%
+      \small%
+      \begin{alltt}%
+}{%
+      \end{alltt}%
+    \end{minipage}%
+  \end{Sbox}%
+  \ovalbox{\TheSbox}%
+  \par
+}

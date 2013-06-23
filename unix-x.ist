@@ -1,0 +1,14 @@
+% Index style file. Written by Per Foreby <per.foreby@kansli.lth.se>
+% Heavily inspired by gind.ist from the doc package.
+
+% Written
+
+symhead_positive	"Symboler"
+item_x1			"\\efill \n \\subitem "
+item_x2			"\\efill \n \\subsubitem "
+delim_0			"\\pfill "
+delim_1			"\\pfill "
+delim_2			"\\pfill "
+heading_prefix		"{\\large\\bfseries\\hfil "
+heading_suffix		"\\hfil}\\vspace*{2pt}\\nopagebreak\n"
+headings_flag		1

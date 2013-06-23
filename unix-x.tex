@@ -1,0 +1,2043 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Written by Per Foreby <per.foreby@kansli.lth.se> 1995-2012
+%
+% Permission is granted to non-profit organisations to use this
+% code any way you want, as long as you don't pretend you wrote it!
+%
+% Credit where credit is due!
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[a4paper,twocolumn]{book}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[swedish]{babel}
+
+%\usepackage[draft,nogray]{unix-x}		% Preview
+%\usepackage[draft]{unix-x}			% Draft printing
+%\usepackage[html]{unix-x}			% For latex2html
+\usepackage{unix-x}				% Final printing
+
+% Detta ligger efter \usepackage{unix-x} eftersom \ifpdf definierad där.
+\ifpdf
+  \usepackage[pdftex]{graphics}
+  \pdfcompresslevel=9
+  \usepackage[pdftex,hyperindex,colorlinks]{hyperref}
+\else
+ %\usepackage[draft]{graphics}
+  \usepackage[final]{graphics}
+  \usepackage[dvips]{hyperref}
+\fi
+
+\usepackage{tabularx}
+
+\usepackage{makeidx}
+\makeindex
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frontmatter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}
+  \vspace*{30mm}
+  \begin{center}
+    \sffamily
+    \renewcommand{\baselinestretch}{1.1}
+    \Huge\bfseries Introduktion till \\[2mm]
+      LTH:s Unixdatorer \\[7mm]
+    \LARGE\mdseries Per Foreby \\[3mm]
+    \large Datordriftgruppen LTH\\
+    Lunds universitet \\[5mm]
+    Version 1.61 \\
+    22 augusti 2012
+  \end{center}
+\end{titlepage}
+
+\onecolumn
+\thispagestyle{empty}
+\hbox{}\vfill\noindent
+\copyright{} 1995--\number\year{} Per Foreby (\ST{per.foreby@kansli.lth.se,
+http://www.ddg.lth.se/perf/}).
+\twocolumn
+
+{\parskip 0pt%
+  \tableofcontents}             % Run toc tighter.
+
+%=============================================================================
+\chapter{Förord}
+%=============================================================================
+\label{cha:forord}
+
+Den här handledningen är en kort introduktion till operativsystemet Unix och
+skrivbordsmiljön Mate.
+
+\section*{Handledningens uppläggning}
+
+Kapitlen \emph{Grunderna} och \emph{Påbyggnad} ska ungefär
+motsvara övningspassen på datastugan. Kapitlet \emph{Överkurs}
+behandlar saker som inte är nödvändiga att lära sig den första veckan,
+men som kan vara bra att kunna för att utnyttja datorerna effektivt under
+utbildningen. Kapitlet \emph{Hemifrån} innehåller en del tips om hur man kan
+komma åt datorerna utifrån.
+
+Handledningen innehåller rätt mycket information, och har man inte använt Unix
+eller Mate tidigare så är det mycket att sätta sig in i.
+Det är därför lämpligt att fortsätta på egen hand med det som ni
+inte hinner med under datastugan.
+
+\section*{Övningsexempel}
+
+I texten finns det en del övningsuppgifter.
+Det finns dock inte övningar på
+allting som handledningen omfattar, så läsaren uppmanas att själv
+prova kommandon allt eftersom de introduceras i texten.
+
+De övningsexempel som finns insprängda i texten ser ut så här
+\begin{exercise}
+Hur gör man för att hitta antalet förekomster av en sträng i en fil?
+\begin{answer}
+  \ST{grep} \emph{sträng} \emph{fil} \verb+|+ \ST{wc} \\
+  eller \\
+  \ST{grep -c} \emph{sträng} \emph{fil}
+\end{answer}
+\end{exercise}
+För de övningar där det är tillämpligt finns svar i
+appendix~\ref{answers}. (Även för ovanstående exempel finns svar.)
+
+\section*{Simulerad text}
+
+När handledningen visar exempel på in- och utmatning i ett
+terminalfönster ser det ut så här:
+\begin{example}
+lo-1\{e01nn\}: \textbf{ls}              
+a.out        uppg2        uppg3.pas~
+uppg1        uppg2.pas
+uppg1.pas    uppg3.pas
+lo-1\{e01nn\}: \textbf{echo "hej hopp i lingonskogen"}
+hej hopp i lingonskogen
+\end{example}
+Den text som användaren själv skriver in markeras med fetstil. Övrig
+text är sådant som datorn skriver till skärmen.
+
+\section*{Tekniska detaljer}
+
+Denna handledning är producerad med typsättningsprogrammet \LaTeX. De
+teckensnitt som har använts är times, avant garde och courier.
+Skärmbilderna är dumpade från en av våra datorer med programmet
+\emph{import} och sedan redigerade med bildbehandlingsprogrammet gimp.
+
+\subsection*{Kommentarer välkomna}
+
+Har ni synpunkter på hur handledningen kan bli bättre, så tar jag
+gärna emot dem, helst via e-post till \ST{per.foreby@kansli.lth.se}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mainmatter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%=============================================================================
+\chapter{Grunderna}
+%=============================================================================
+\label{cha:grunderna}
+
+
+
+\section{Inledning}
+
+
+\subsection{Datorerna}
+\index{datorerna}
+
+Unixdatorerna som används på LTH är vanliga PC-maskiner av olika
+modeller och åldrar. Vi har 13 olika unixrum med
+vardera 10--15 arbetsstationer:
+\begin{description}
+\item[venus, mars, jupiter] \mbox{}\\
+  Rummen finns i norra delen av E-husets källare. 
+\item[hacke, panter, lo, val, falk, varg] \mbox{}\\
+  Rum i södra delen av E-husets källare.
+\item[alfa, beta, gamma] \mbox{}\\
+  På andra våningen i E-huset.
+\item[backus] \mbox{}\\
+  Rummet finns på bottenvåningen i matematikhuset.
+\end{description}
+
+I E-huset finns även ett antal rum med datorer som kör Windows, och i
+Matematikhuset finns också ett Windowsrum.
+Windowsdatorerna behandlas inte alls i denna handledning.
+
+LTH har även studentdatorer i Studiecentrum, M-huset, V-huset, A-huset, IKDC,
+Kemicentrum och fysicum.
+Samtliga dessa datorer kör Windows, så det är alltså bara i E-huset som det
+finns Unixdatorer.
+
+Som student på LTH kan man använda datorer i alla husen, men programvarorna i
+respektive hus är anpassade till undervisningen i huset. De övriga husen
+saknar alltså en del av de program som ni kan behöva, och på motsvarande sätt
+finns till exempel inte M-husets CAD-program i E-huset.
+
+Datorerna i LTH:s studiecentrum har inga husspecifika programvaror, utan
+endast vår grundinstallation. De är i första hand tänkta för enklare
+uppgifter, som till exempel rapportskrivning.
+
+Sedan finns det några datorrum som tillhör institutioner, men som är kopplade
+till vårt gemensamma datorsystem för att underlätta för studenterna. Sådana
+datorer hittar man bland annat på fysicum, reglerteknik och elektro- och
+informationsteknik (EIT).
+
+\subsection{Operativsystemet Unix}
+\index{Unix}\index{operativsystem}
+
+Ett operativsystem är en uppsättning program som administrerar datorns
+interna arbete och erbjuder användaren ett antal färdiga kommandon.
+
+Våra datorer använder ett operativsystem i Unixfamiljen. Unix
+började utvecklas på Bell Laboratories i USA 1969, och är idag ett
+mycket moget och väl fungerande operativsystem. Unix finns i ett antal
+olika varianter. Sett ur den vanliga användarens synvinkel är dock de
+olika unixdialekterna mycket lika. Det är oftast bara avancerade
+programmerare som märker skillnaderna.
+
+\index{Linux Mint}\index{Ubuntu}\index{Linux}\index{Debian/GNU}\index{BSD}Vi
+använder en variant som heter Linux Mint i datorsalarna, och Debian/GNU Linux på
+servrarna.  (Linux Mint bygger på Ubuntu som i sin tur bygger på Debian, så
+det är i princip samma sak (Linux Mint och Ubuntu har nyare programvaror, men
+Debian är stabilare).  Exempel på andra unixdialekter är BSD, HP--UX och AIX.
+Även operativsystemet i en MacIntosh är Unix. Sedan MacosX har de nämligen BSD
+i botten.
+
+Linux är en helt fri variant av Unix. Ibland skiljer man mellan Linux och
+Unix, och då menar man med Unix de kommersiella varianterna, alternativt alla
+som inte är Linux. Andra använder Unix för att beteckna alla unixliknande
+operativsystem, inklusive Linux. I den här handledningen har vi valt den
+senare varianten.
+
+\subsection{Fönstersystemet X}
+\index{X Window System}
+\index{fönstersystem}
+
+De program som gör att man kan arbeta med olika fönster på den
+grafiska bildskärmen kallas för ett \emph{fönstersystem}. Det system
+som vi använder heter \emph{X Window System, Version 11},
+eller kort och gott \emindex{X}. Det förekommer även andra
+förkortningar som \emindex{X11} eller \emindex{X.org} (efter organisationen
+som utvecklar systemet). Ibland används
+även den felaktiga benämningen \emph{X Windows}.
+
+Det program som ger fönstersystemet sitt karaktäristiska utseende
+kallas för \emindex{fönsterhanterare} eller \emph{window manager}. Det
+ansvarar bland annat för att rita ramar runt fönster och göra menyer, medan
+varje program ansvara för resten av utseendet.
+
+I dag går man ofta ett steg längre och använder något som kallas
+\emindex{skrivbordsmiljö} (\emph{desktop environment}). Med en sådan så får
+alla program ett gemensamt utseende och kan även kommunicera med varandra
+bättre än om man bara har en fönsterhanterare. Vi använder en skrivbordsmiljö
+som heter \emindex{Mate}. Andra exempel på skrivbordsmiljöer är
+\emindex{KDE}, \emindex{XFce}, \emindex{Unity} och \emindex{Gnome}. Mate är en
+vidareutveckling av en tidigare version av Gnome.
+
+\section{Datastugan}
+
+Ni som går igenom detta kompendium på introduktionsveckans datastuga
+har en övningsledare. Han/hon har betalt för att svara på frågor och
+hjälpa dig genom övningarna. Tveka inte att utnyttja övningsledarens
+kunskaper. 
+\begin{exercise}
+  Ta reda på vad din övningsledare heter och anteckna det nedan.
+\end{exercise}
+
+\vspace{5mm}
+Min övningsledare heter \dotfill
+
+\section{Inloggning}
+
+För att kunna använda datorn måste man vara registrerad som användare
+i datorsystemet. Det brukar kallas för att ha ett \emindex{konto}.
+
+En användare identifieras med ett unikt \rmindex{användarnamn}
+(\emindex{username}) och ett \rmindex{lösenord} (\emindex{password}).
+På Lunds universitet är det uppbyggt av tre bokstäver som har med kursen
+eller programmet man läser at göra. Därefter kommer året man fick kontot, och
+sist tre initialer.
+
+Tidigare var våra användarnamn uppbyggda på ett annat sätt. Det är
+därför som exempelstudenten i detta häfte heter \emph{e01nn}.
+
+Alla studenter har förhoppningsvis redan fått sitt konto hemskickat. Annars
+kan man hämta ut det på studiecentrum. Observera att det inte går att logga in
+på datorerna förrän man har hämtat ut sitt LU-kort.
+
+Nu är det dags att använda användarnamnet och lösenordet för att
+\emindex{logga in}\index{inloggning}.
+\begin{exercise}
+  Rör på musen för att tända skärmen (om den är släckt).
+  Skriv in ditt användarnamn och tryck på retur-tangenten. 
+  Skriv sedan in ditt lösenord och tryck retur igen.
+\end{exercise}
+
+\section{Introduktion till Mate}
+\index{Mate}
+
+Om du skrev rätt användarnamn och lösenord slutförs inloggningen på några
+sekunder.
+
+På skärmen finns nu några \emindex{ikoner}, och längst ned en så kallad
+\emindex{panel}.
+
+\subsection{Paneler}
+\index{Paneler}
+
+En panel har i sig inte någon funktion, utan är bara en container som i sin
+tur innehåller andra funktioner. I standardutförandet finns det bland annat
+meny, volymkontroll samt tid och datum.
+
+Längst till vänster i panelen finns menyn. I den finns alla viktiga funktioner
+och program. Genom att klicka längst upp till höger i menyn kan man växla
+mellan att visa \emph{Favorites} eller \emph{All applications}. I det senare
+läget visas alla program indelade i kategorier. Den kategori som heter
+\emph{Debian} är lite speciell, där finns alla möjliga program, även sådana
+som inte är gjorda för Mate. Använder man program från den menyn får man räkna
+med att en del har användargränssnitt som kan kännas lite ovana i början.
+
+\begin{exercise}
+Bekanta dig med innhehållet i menyerna. 
+\end{exercise}
+
+Klickar man på symbolen till höger om menyn döljer man tillfälligt alla
+fönster så att man kan hitta eventuella ikoner på skrivbordet. Klickar man
+igen visas fönstren igen.
+
+I mitten av panelen får man en lista över alla aktiva program. Genom att
+klicka på dem kan man minimera (dölja) enstaka program.
+
+Sedan följer en eller flera symboler, bland annat volymkontroll. Alla datorer
+har inte högtalare - vill man lyssna på ljud ska man dessutom ha egna hörlurar
+med sig så att man inte stör andra användare.
+
+Klockan längst till höger kan man klicka på. Då får man upp en kalender.
+Klickar man igen stänger man kalendern.
+
+Det går att lägga till fler funktioner i en panel. I så fall högerklickar
+man på panelen och väljer \emph{Add to Panel}.
+
+Om man vill kan man även ha flera paneler. För att lägga till en ny panel
+högerklickar man på en befintlig panel och väljer \emph{New Panel}.
+
+\begin{exercise}
+Klicka runt och bekanta dig med funktionerna. Tänk på att man både kan
+vänster- och högerklicka på en del symboler.
+\end{exercise}
+
+\subsection{Musoperationer}
+\index{musoperationer}
+
+Musen har tre knappar och fungerar ungefär som i Windows, men med en stor
+skillnad: För att klippa och klistra behöver man bara markera texten med
+vänsterknappen, sedan klistrar man in den genom att klicka på mittknappen
+(rullhjulet). I de flesta program går det även att klippa och klistra med
+tangentbordsoperationer, precis som i andra operativsstem.
+Markera en bit text. Använd sedan \emph{Ctrl-C} för
+att kopiera den eller \emph{Ctrl-X} för att klippa ut den. Flytta sedan
+muspekaren dit du vill ha texten och tryck \emph{Ctrl-V} för att klistra in
+texten.
+\begin{exercise}
+Öpnna ett terminalfönster (finns i vänsterkolumnen i menyn).
+Öppna sedan en editor (\emph{Applications->Accessories->pluma}).
+Prova att skriva lite text och kopiera den inom ett fönster och mellan
+fönstren.
+\end{exercise}
+
+\subsection{Val av språk}
+Eftersom vi har en hel del gäststudenter på LTH så har vi valt att ha engelska
+som standardspråk på datorerna. Vill man ha ett svenskt användargränssnitt så
+väljer man det på inloggningsskärmen.
+
+Om man väljer ett annat språk så ändras det i de flesta programmen. Det finns
+dock en del program som inte är översatta. Framför allt gäller det programmen
+i kategorin \emph{Debian}.
+
+\subsection{Skärmlåsning}
+\index{Skärmlåsning}
+
+I menyn kan man låsa skärmen manuellt. Den låser sig även efter
+ett tag om man inte gör någonting. För att låsa upp igen rör man på musen och
+får upp en ruta där man skriver in sitt lösenord. Det är inte tillåtet att
+låsa skärmen under längre perioder. I så fall ska man i stället logga ut så
+att någon annan kan använda datorn. Som tumregel kan man säga att 15
+minuter kan vara ok, men det är absolut inte är tillåtet att reservera en
+dator och sedan gå på en föreläsning i två timmar.
+
+\subsection{Mer om Mate}
+
+Här har ni bara fått en kort introduktion till Mate. Det finns mycket mer att
+lära sig om hur man använder och konfigurerar systemet.
+
+Den som är intresserad kan titta på avsnittet \emph{Introduction to the Linux
+Mint Desktop} i
+http://www.linuxmint.com/documentation/user-guide/english\_13.0.pdf.
+
+
+\section{Passerkort}
+
+För att kunna komma in i datorrummen behöver man ett
+\rmindex{passerkort} med en personlig kod. Passerkortet fungerar även
+till ytterdörrarna, så att man kan komma i in i huset på
+kvällar och helger. Kortet fungerar även som ID-kort, och på kvällar och
+helger kan väktarna kräva att man visar upp sitt kort.
+
+\section{Lösenord}
+
+Ditt användarnamn och \rmindex{lösenord} är nyckeln till ditt
+datorkonto. Det är viktigt att du håller ditt lösenord hemligt så att
+ingen annan kan komma åt din laborationsrapport eller göra något
+otillåtet i ditt namn. \textbf{Avslöja aldrig ditt lösenord för någon.}
+
+Ibland kan det förekomma mailutskick som säger att man ska skriva in sitt
+lösenord på en websida för att få behålla sitt mailkonto.  Vi skickar
+\textbf{aldrig} ut mail och ber studenterna skriva sina lösenord på en extern
+websida. Det är är bara ett sätta för spammare att komma över konton som sen
+kan användas till att skicka ut massor av spam! Låt er alltså inte luras av de
+här mailen.
+
+\subsection{Att byta lösenord}
+
+\index{lösenord}
+För att inte lösenorden ska bli för lättgissade finns vissa
+krav på hur ett lösenord ska se ut. De måste vara minst åtta tecken
+långa, och innehålla tecken ur tre av följande fyra grupper:
+\begin{itemize}
+\item små bokstäver (gemener)
+\item stora bokstäver (versaler)
+\item siffror
+\item specialtecken
+\end{itemize}
+
+Lösenordsbyte görs på https://www.uw.lu.se/.
+
+När man har bytt sitt lösenord kan det ta någon minut innan det fungerar
+överallt.
+
+\section{Filer och kataloger}
+
+Hittills har vi bara tittat på fönstersystemet. Nu ska vi börja
+titta närmare på det som är en av styrkorna med Unix, nämligen en uppsättning
+enkla kommandon som man skriver i ett terminalfönster. Var för sig är dessa
+kommandon inte så upphetsande, men genom att kombinera dem kan man göra
+riktigt avancerade saker. (Det här går vi in på mer i detalj i nästa kapitel.)
+
+I Unix är det skillnad mellan stora och små bokstäver, både i filnamn och
+kommandon, så tänk på det när ni testar kommandon.
+
+Ett \emindex{fil} är en uppsättning av information som man har lagrat
+i datorn för att kunna ta fram den vid ett senare tillfälle. Det kan
+till exempel vara ett program, en databas eller en text (som ett brev). Ordet
+fil kommer från engelskans \emph{file} som betyder mapp. Tänk på hur
+förbrytarregister ser ut i alla amerikanska polisfilmer - ett par
+papper i en mapp som sedan hänger i ett arkivskåp. I datorn ser det
+likadant ut - diverse information samlas ihop i en fil som man ger ett
+namn och lägger i en katalog. Mer om kataloger kommer nedan, men först
+ska vi visa en del exempel på vad man kan göra med filer.
+
+\subsection{Att skapa filer}
+
+Ett sätt att skriva in text i en fil är att använda kommandot
+\emindex{cat}. Det är en förkortning av \emph{concatenate} som betyder
+att slå ihop. Kommandot kan användas för att slå ihop flera filer, men
+i sin enklaste form läser det rader från tangentbordet och skriver dem
+till terminalen:
+\begin{example}
+lo-1\{e01nn\}: \textbf{cat}
+\textbf{Hej hopp i lingonskogen}
+Hej hopp i lingonskogen
+\textbf{Detta är den andra raden av tre}
+Detta är den andra raden av tre
+\textbf{Nu är det dags att avsluta och gå vidare}
+Nu är det dags att avsluta och gå vidare
+\textbf{\Ctrl{d}}
+lo-1\{e01nn\}: 
+\end{example}
+För att avsluta inmatningen av text skriver man ett
+\emindex{filslutstecken} (\emindex{end-of-file}) först på en rad. I
+Unix är det tecknet som heter \Ctrl{d}, som man får fram genom att
+hålla nere tangenten märkt\label{control} \textsc{control} eller
+\textsc{ctrl} samtidigt som man trycker på tangenten \textsc{d}.
+\begin{exercise}
+  Prova att skriva text med cat som i exemplet ovan. Lär dig hur man
+  skriver \Ctrl{d} för att avsluta inmatningen.
+\end{exercise}
+Nu är det ganska meningslöst att skriva text från tangentbordet till
+skärmen. Vi vill kunna spara texten i en fil. Det gör man genom att
+använda tecknet \ttindex{>} för att tala om för Unix att dirigera om
+utmatningen från ett program till en fil:
+\begin{example}
+lo-1\{e01nn\}: \textbf{cat > nisse}
+\textbf{Nils Nilsson
+Gatvägen 12
+123 45 Lundfanstorp}
+\textbf{\Ctrl{d}}
+lo-1\{e01nn\}: 
+\end{example}
+Svenska bokstäver\index{svenska bokstäver} och bokstäver med accenter
+ska man helst undvika i filnamn. Mycket av utvecklingen sker i USA, och det är
+inte alltid utvecklarna tänker på att programmen ska fungera med våra
+bokstäver.
+\begin{exercise}
+  Skapa en fil som med samma namn som ditt förnamn och mata in ditt
+  namn och adress. Använd gärna aao i stället för åäö om du har svenska
+  bokstäver i ditt förnamn, och undvik accenter.
+\end{exercise}
+
+\subsection{Att titta i filer}
+
+För att skriva ut innehållet i en fil på skärmen använder man också
+programmet cat. Genom att skriva ett filnamn efter cat läser
+programmet från filen i stället för från tangentbordet:
+\begin{example}
+lo-1\{e01nn\}: \textbf{cat nisse}
+Nils Nilsson
+Gatvägen 12
+123 45 Lundfanstorp
+lo-1\{e01nn\}: 
+\end{example}
+\begin{exercise}
+  Skriv ut din fil på skärmen och kontrollera att din adress stämmer.
+\end{exercise}
+
+\subsection{Att lista filer}
+
+Om man inte kommer ihåg vad man kallade filen kan man använda
+kommandot \emindex{ls} vilket är en förkortning för list. \emph{ls}
+skriver ut namnen på alla filer:
+\begin{example}
+lo-1\{e01nn\}: \textbf{ls}
+Mail/   nisse
+lo-1\{e01nn\}: 
+\end{example}
+Filen som heter \emph{Mail} är en katalog som systemet har skapat åt
+dig. Vi åter kommer till den senare.
+
+\subsection{Att flytta, döpa om och ta bort filer}
+
+Nu ska vi titta på tre kommandon som heter \emindex{cp}, \emindex{mv}
+och \emindex{rm}. Det är förkortningar för copy, move respektive
+remove.
+
+Med kommandot
+\begin{example}
+lo-1\{e01nn\}: \textbf{cp nisse nisse2}
+\end{example}
+skapar man en kopia av filen nisse som heter nisse2. Om man i stället
+skriver
+\begin{example}
+lo-1\{e01nn\}: \textbf{mv nisse nisse2}
+\end{example}
+döper man om nisse till nisse2. Nu finns alltså inte filen nisse kvar.
+Genom att skriva
+\begin{example}
+lo-1\{e01nn\}: \textbf{rm nisse2}
+\end{example}
+tar man bort filen nisse2.
+\begin{exercise}
+  Prova att byta namn på din fil och skapa ett par kopior av den. Ta
+  sedan bort alla kopior så att det bara finns en fil kvar. Under
+  tiden kan du använda ls för att se vilka filer som finns och cat för
+  att se deras innehåll.
+\end{exercise}
+
+\subsection{Kataloger}
+
+\index{katalog}\index{filkatalog}
+Alla filer lagras i \emph{kataloger} (på engelska heter det
+\emindex{directory}). I en katalog kan det finnas
+\rmindex{underkataloger} i flera nivåer. Man brukar kalla det hela för
+ett \rmindex{katalogträd} eftersom det ser ut som ett träd (med roten
+uppåt).
+
+Varje användare har en egen \emindex{hemmakatalog}. Det är där man
+befinner sig när man precis har loggat in. De filer som vi skapade i
+den förra övningen låg alla i hemmakatalogen.
+\begin{figure}[tbp]
+  \centerline{\begin{picture}(80,28)(-40,-25)
+      \put(0,0){\makebox(0,0){\ST{\~}}}
+      \put(0,0){\oval(20,6)}
+      \put(7,-3){\line(2,-1){14}}
+      \put(0,-3){\line(0,-1){6}}
+      \put(-7,-3){\line(-2,-1){12}}
+      \put(-25,-12){\makebox(0,0){\ST{Mail}}}
+      \put(-25,-12){\oval(20,6)}
+      \put(0,-12){\makebox(0,0){\ST{adresser}}}
+      \put(0,-12){\oval(20,6)}
+      \put(21,-12){\makebox(0,0){\ST{nisse}}}
+      \put(6,-15){\line(1,-1){7}}
+      \put(0,-15){\line(0,-1){7}}
+      \put(-6,-15){\line(-1,-1){7}}
+      \put(-13,-24){\makebox(0,0){\ST{fil1}}}
+      \put(0,-24){\makebox(0,0){\ST{fil2}}}
+      \put(13,-24){\makebox(0,0){\ST{fil3}}}
+    \end{picture}}
+  \caption{Katalogträd för en användare}
+  \label{fig:hemma}
+\end{figure}
+
+I figur~\ref{fig:hemma} finns ett exempel på hur en användares
+katalogträd kan se ut. Anledningen till att själva hemmakatalogen
+skrivs som tilde (\ST{\~}) återkommer vi till
+senare.
+
+
+\subsection{Att skapa och ta bort kataloger}
+
+För att skapa en katalog\index{katalog!skapa} använder man kommandot
+\emindex{mkdir} som betyder \emph{make directory}. Med \emindex{rmdir}
+(\emph{remove directory}) tar man bort katalogen\index{katalog!ta
+bort}.
+
+Om man t~ex vill skapa en katalog för att lagra adresser till sina
+vänner skriver man:
+\begin{example}
+lo-1\{e01nn\}: \textbf{mkdir adresser}
+\end{example}
+Nu kan vi använda \emph{ls} för att se hur det ser ut:
+\begin{example}
+lo-1\{e01nn\}: \textbf{ls}
+Mail/      adresser/  nisse
+\end{example}
+Lägg märke till att det finns ett
+\rmindex{snedstreck}\hidettindex{/} sist på den nya katalogen. Det
+ingår inte i filnamnet, utan det är ls som lägger till det för att
+visa att det är en katalog och inte en vanlig fil. På samma sätt får
+man en asterisk (\ttindex{*}) sist på ett filnamn om filen är
+ett exekverbart program (t~ex rm eller ett program som man har gjort själv i
+någon kurs).
+
+\subsection{Att använda kataloger}
+
+Nu kan vi använda \emindex{cp} och \emindex{mv} för att kopiera eller
+flytta filer till den nya katalogen. Om man skriver
+\begin{example}
+lo-1\{e01nn\}: \textbf{cp nisse adresser}
+\end{example}
+så upptäcker cp att destinationen är en katalog och skapar en ny fil
+som heter likadant som originalet, dvs nisse, men som ligger i
+katalogen adresser. Nu kan vi titta på den nya filen
+\begin{example}
+lo-1\{e01nn\}: \textbf{cat adresser/nisse}
+Nils Nilsson
+Gatvägen 12
+123 45 Lundfanstorp
+\end{example}
+Som ni ser använder man snedstreck (\ST{/}) för att skilja katalog och
+filnamn åt. Därför kan aldrig ett snedstreck ingå i ett filnamn.
+
+Om man vill kalla den kopierade filen något annat än originalet
+skriver man t~ex
+\begin{example}
+lo-1\{e01nn\}: \textbf{cp nisse adresser/nisse2}
+\end{example} 
+Det fungerar likadant med \emph{mv}, dvs om destinationen är en
+katalog får filen samma namn i den nya katalogen.
+
+Man kan även använda \emph{mv} för att döpa om en katalog:
+\begin{example}
+lo-1\{e01nn\}: \textbf{mv adresser addresses}
+\end{example}
+För att se innehållet i en underkatalog använder man \emindex{ls} men
+lägger till katalogens namn:
+\begin{example}
+lo-1\{e01nn\}: \textbf{ls addresses}
+nisse    nisse2
+\end{example}
+\begin{exercise}
+  Skapa en ny katalog som heter temp. Skapa en kopia av din adressfil
+  i den nya katalogen. Försök sedan att ta bort katalogen med
+  rmdir. Vad händer?
+  \begin{answer}
+    rmdir svarar: \ST{rmdir: temp: Directory not empty}. Det går
+    alltså inte att ta bort en katalog som innehåller filer. För att
+    kunna ta bort katalogen måste man skriva \ST{rm temp/fil} och
+    sedan köra rmdir.
+
+    Ett annat sätt är att skriva \ST{rm -r temp}. Det betyder: ta
+    bort katalogen temp och \emph{alla} filer och underkataloger som
+    finns i temp (\ST{-r} betyder rekursiv). Detta är lite
+    farligt om man råkar skriva fel.
+  \end{answer}
+\end{exercise}
+\begin{exercise}
+  Skapa en underkatalog som heter \emph{slask}. Prova att kopiera och
+  flytta din fil till den nya katalogen, dels under samma namn, dels
+  med nytt namn. Döp sedan om katalogen till \emph{adresser} och ta
+  bort några filer.  Använd under tiden ls för att se innehållet i
+  katalogen.
+\end{exercise}
+
+\subsection{Absoluta och relativa sökvägar}
+
+Katalogträdet i figur~\ref{fig:hemma} är egentligen bara en del av
+systemets stora filträd. I figur~\ref{fig:tree} ser vi det insatt i
+sitt sammanhang tillsammans med en del andra kataloger i Unixsystemet.
+\begin{figure}[tbp]
+  \centerline{\begin{picture}(80,76)(-40,-25)
+      \put(0,48){\makebox(0,0){\ST{/}}}
+      \put(0,48){\oval(30,6)}
+      \put(0,45){\line(0,-1){6}}
+      \put(4,45){\line(2,-1){12}}
+      \put(-4,45){\line(-2,-1){12}}
+      \put(12,45){\line(3,-1){18}}
+      \put(-12,45){\line(-3,-1){18}}
+%
+      \put(-30,36){\makebox(0,0){\ST{var}}}
+      \put(-30,36){\oval(10,6)}
+      \put(-15,36){\makebox(0,0){\ST{usr}}}
+      \put(-15,36){\oval(10,6)}
+      \put(15,36){\makebox(0,0){\ST{bin}}}
+      \put(15,36){\oval(10,6)}
+      \put(30,36){\makebox(0,0){\ST{tmp}}}
+      \put(30,36){\oval(10,6)}
+      \put(0,36){\makebox(0,0){\ST{h}}}
+      \put(0,36){\oval(10,6)}
+      \put(-2,33){\line(-5,-1){30}}
+      \put(-1,33){\line(-2,-1){12}}
+      \put(0,33){\line(0,-1){6}}
+      \put(1,33){\line(2,-1){12}}
+      \put(2,33){\line(5,-1){30}}
+%
+      \put(-33,24){\makebox(0,0){\ST{d1}}}
+      \put(-33,24){\oval(10,6)}
+      \put(-23,24){\makebox(0,0){\ldots}}
+      \put(-13,24){\makebox(0,0){\ST{d7}}}
+      \put(-13,24){\oval(10,6)}
+      \put(13,24){\makebox(0,0){\ST{da}}}
+      \put(13,24){\oval(10,6)}
+      \put(23,24){\makebox(0,0){\ldots}}
+      \put(33,24){\makebox(0,0){\ST{dd}}}
+      \put(33,24){\oval(10,6)}
+      \put(0,24){\makebox(0,0){\ST{d8}}}
+      \put(0,24){\oval(10,6)}
+      \put(0,21){\line(0,-1){6}}
+      \put(-1,21){\line(-2,-1){12}}
+      \put(1,21){\line(2,-1){12}}
+      \put(2,21){\line(4,-1){24}}
+%
+      \put(-12,12){\makebox(0,0){\ST{a}}}
+      \put(-12,12){\oval(10,6)}
+      \put(0,12){\makebox(0,0){\ST{b}}}
+      \put(0,12){\oval(10,6)}
+      \put(12,12){\makebox(0,0){\ST{c}}}
+      \put(12,12){\oval(10,6)}
+      \put(24,12){\makebox(0,0){\ST{d}}}
+      \put(24,12){\oval(10,6)}
+      \put(-13,9){\line(-3,-1){18}}
+      \put(-12,9){\line(1,-1){6}}
+      \put(-11,9){\line(5,-1){30}}
+%
+      \put(-32,0){\makebox(0,0){\ST{d99xx}}}
+      \put(-32,0){\oval(20,6)}
+      \put(18,0){\makebox(0,0){\ST{c01yy}}}
+      \put(18,0){\oval(20,6)}
+      \thicklines
+      \put(-7,0){\makebox(0,0){\ST{\textbf{e01nn}}}}
+      \put(-7,0){\oval(20,6)}
+      \put(-14,-3){\line(-2,-1){12}}
+      \put(-7,-3){\line(0,-1){6}}
+      \put(0,-3){\line(2,-1){14}}
+%
+      \put(-32,-12){\makebox(0,0){\ST{\textbf{Mail}}}}
+      \put(-32,-12){\oval(20,6)}
+      \put(-7,-12){\makebox(0,0){\ST{\textbf{adresser}}}}
+      \put(-7,-12){\oval(20,6)}
+      \put(14,-12){\makebox(0,0){\ST{\textbf{nisse}}}}
+      \put(-13,-15){\line(-1,-1){7}}
+      \put(-7,-15){\line(0,-1){7}}
+      \put(-1,-15){\line(1,-1){7}}
+%
+      \put(-20,-24){\makebox(0,0){\ST{\textbf{fil1}}}}
+      \put(-7,-24){\makebox(0,0){\ST{\textbf{fil2}}}}
+      \put(6,-24){\makebox(0,0){\ST{\textbf{fil3}}}}
+    \end{picture}}
+  \caption{Del av ett katalogträd i ett Unixsystem}
+  \label{fig:tree}
+\end{figure}
+
+Längst upp i trädet finns den så kallade \emindex{rotkatalogen} eller
+kort och gott roten. Den betecknas med ett ensamt
+\rmindex{snedstreck}. I just detta speciella fall är alltså \ST{/}
+namnet på en katalog i stället för att skilja katalog- och filnamn åt.
+
+När vi skrev \ST{adresser/nisse} var det vad man kallar en
+\emindex{relativ sökväg}\index{sökväg!relativ}, dvs namnet utgår från
+den aktuella katalogen. Motsatsen är en \emindex{absolut
+sökväg}\index{sökväg!absolut}. Den utgår från roten och samma fil som
+ovan heter då \ST{/h/d8/a/e01nn/adresser/nisse}. Sökväg heter förresten
+\emph{path}\index{path|see{sökväg}} på engelska.
+
+Den absoluta sökvägen till hemmakatalogen för e01nn är
+\ST{/h/d8/a/e01nn}. Anledningen att vi skrev den som \rmindex{tilde}
+(\ST{\~}) är att man kan använda förkortningar i filnamn (se
+tabell~\ref{tab:forkort}).
+\begin{table}[tbp]
+  \hidettindex{.}\hidettindex{..}\index{~@\verb/~/}%
+  \begin{tabularx}{\linewidth}{|lX|}\hline
+    \ST{\~{}} & min egen hemmakatalog. \\
+    \ST{\~{}user} &  hemmakatalog för användaren med användarnamnet 
+      \emph{user}.\\
+    \ST{.} &  Aktuell katalog.\\
+    \ST{..} &  Katalogen ovanför aktuell katalog. \\
+    \hline
+  \end{tabularx}
+  \caption{Förkortningar i filnamn}
+  \label{tab:forkort}
+\end{table}
+
+Med denna nya kunskap kan vi skriva sökvägen till katalogen adresser
+på ett par olika sätt:
+\begin{ttquote}
+  adresser \\
+  \~{}/adresser \\
+  \~{}e01nn/adresser \\
+  /h/d8/a/e01nn/adresser \\
+  ./adresser \\
+  ../../a/e01nn/adresser
+\end{ttquote}
+
+\begin{exercise}
+  Vilken katalog pekar \ST{\~{}/./././././adresser/././..} på? Kan
+  ovanstående sökväg förkortas och i så fall hur och varför?
+  \begin{answer}
+    Det är samma sak som din hemmakatalog. Eftersom en ensam punkt
+    betyder att man går till den katalog där man redan befinner sig
+    kan alla \ST{./} tas bort. \ST{adresser/..} betyder att
+    man går ner i \ST{adresser} och sedan upp igen. Alltå kan även
+    detta tas bort. Hela sökvägen kan förkortas till \ST{\~{}}.
+  \end{answer}
+\end{exercise}
+\begin{exercise}
+  Eftersom en ensam punkt pekar på aktuell katalog kan man inte ha den
+  till mycket, eller\ldots? Försök komma på ett tillfälle när den behövs.
+  \begin{answer}
+    Om man vill kopiera eller flytta en fil från en annan katalog
+    \emph{till} aktuell katalog utan att döpa om den skriver man t~ex:
+    \begin{ttquote}
+      cp adresser/nisse .
+    \end{ttquote}
+  \end{answer}
+\end{exercise}
+
+\subsection{Att byta aktuell katalog}
+
+Den aktuella katalogen\index{aktuell katalog}\index{katalog!aktuell}
+heter på engelska \emph{working directory}. För att se var i
+filsystemet man befinner sig använder man kommandot \emindex{pwd} som
+betyder \emph{print working directory}.
+\begin{example}
+lo-1\{e01nn\}: \textbf{pwd}
+/h/d8/a/e01nn
+\end{example}
+
+Om man vill byta aktuell katalog använder man kommandot \emindex{cd}
+(\emph{change directory}).
+\begin{example}
+lo-1\{e01nn\}: \textbf{pwd}
+/h/d8/a/e01nn
+lo-1\{e01nn\}: \textbf{cd adresser}
+lo-1\{e01nn\}: \textbf{pwd}
+/h/d8/a/e01nn/adresser
+lo-1\{e01nn\}: \textbf{cd ..}
+lo-1\{e01nn\}: \textbf{pwd}
+/h/d8/a/e01nn
+\end{example}
+Som ni ser använde vi \ST{..} som argument till cd för att gå upp en
+nivå i filträdet. Just i detta fall kunde vi ha skrivit \ST{cd} utan
+argument. Då kommer man nämligen alltid till hemmakatalogen.
+\begin{exercise}
+  Gå till katalogen \ST{adresser} och skapa två nya filer med
+  adresser. Gå sedan tillbaka till hemmakatalogen. Vad händer med
+  rubriken i fönstrets titelrad när du byter katalog?
+  \begin{answer}
+    Texten \ST{user@maskin:\~{}} ändras så att det i stället står
+    \ST{user@maskin:\~{}/adresser}
+  \end{answer}
+\end{exercise}
+
+\section{Hjälp}
+
+\index{hjälp}I Unixsystem finns det normalt alltid textbaserade
+manualer till alla program.
+Programmet som används heter \emindex{man}. Om man t~ex vill
+lära sig allt om ls skriver man
+\begin{example}
+lo-1\{e01nn\}: \textbf{man ls}
+\end{example}
+så får man fram den kompletta referensmanualen\label{man-less} för ls.
+För att gå framåt i texten trycker man \emph{f} (forward) eller mellanslag,
+för att gå
+bakåt \emph{b} (backward) och för att avsluta \emph{q} (quit).
+\begin{exercise}
+  Ta fram manualen för \emph{rm}. Vad betyder det om man skriver
+  \ST{rm~-i} i stället för att bara skriva \ST{rm}?
+  \begin{answer}
+    Det får rm att fråga om tillstånd innan den tar bort några filer.
+  \end{answer}
+\end{exercise}
+
+Det finns även en del hjälp på www.ddg.lth.se.
+Här hittar man information om e-post, egna websidor och annat, och på
+förstasidan finns det driftinformation.
+
+Om ni inte själva lyckas hitta lösningen på ett problem är det dags
+att prata med någon som kanske vet mer. Har problemet att göra med en
+uppgift som man ska lösa i en kurs, bör man prata med institutionen
+som ger kursen. Om man däremot misstänker att det är något fel på
+själva datorsystemet ska man prata med \emph{Datordriftgruppen (DDG)}.
+
+\section{Datordriftgruppen}
+
+\index{datordriftgruppen}Datordriftgruppen LTH eller kort och gott
+\emindex{DDG} har till uppgift att sköta undervisningsdatorerna på
+LTH och en del annat. Totalt är vi 10 personer. Av dessa sitter
+två personer i E-huset, vid datorrummen i södra delen av huset
+(rumsnummer 0531).
+
+
+\subsection{Felanmälan}
+
+Om man vill rapportera ett fel behöver man inte besöka DDG
+personligen. Det går också bra att anmäla fel genom att skicka brev till
+\ST{ehuset@ddg.lth.se}. 
+
+Tänk på att berätta utförligt om felet, då ökar chansen att det blir
+åtgärdat. Ta med eventuella felutskrifter från datorn i din
+felrapport.
+
+Vi har inte möjlighet att gå runt och kontrollera att alla datorer
+fungerar som de ska, så därför är vi beroende av felrapporter för att
+kunna åtgärda trasiga datorer.
+
+Tro inte att någon annan redan har rapporterat felet. Om alla
+resonerar så kan datorerna vara trasiga i flera veckor innan vi
+upptäcker det. Vi tar hellre emot flera anmälningar av samma fel, än
+inga alls.
+
+
+%=============================================================================
+\chapter{Påbyggnad}
+%=============================================================================
+\label{cha:pabyggnad}
+
+\section{Skrivare}
+
+\label{sec:skrivare}\index{skrivare}\index{utskrift}
+I de flesta datorrum finns en \rmindex{laserskrivare}.
+För att kunna skriva ut måste man först köpa utskrifter. Det gör man på
+http://www.lu.se/printaccount. Utskriftssystemet är gemensamt för hela Lunds
+unviversitet och går alltså även att använda utanför LTH.
+
+\subsection{Att skriva ut}
+
+Från programmen kan man oftast skriva ut via menyerna, men för att skriva ut
+en fil från kommandoraden använder man kommandot \emindex{lp} som står
+för line print. För att skriva ut en filen \emph{nisse} skriver man
+\begin{example}
+lo-1\{e01nn\}: \textbf{lp nisse}
+\end{example}
+då kommer utskriften på den närmaste skrivaren. Vill man skicka
+utskriften till en viss skrivare anger man dess namn:
+\begin{example}
+lo-1\{e01nn\}: \textbf{lp -d hacke nisse}
+\end{example}
+Nu kommer filen \emph{nisse} att skrivas ut på skrivaren i rummet
+\emph{hacke} (alla skrivare heter likadant som det rum de står i). När
+utskriften har skickats iväg får man ett meddelande uppe
+i högra hörnet på skärmen.
+
+För att få lite snyggare formattering av utskrifterna man man använda
+programmet \emindex{a2ps}. Till exempel gör man så här för att skriva ut ett
+dokument med två sidor på varje papper:
+\begin{example}
+lo-1\{e01nn\}: \textbf{a2ps -2 nisse}
+\end{example}
+För att se vad man kan göra med \emindex{a2ps} i övrigt, skriv
+\begin{example}
+lo-1\{e01nn\}: \textbf{a2ps --help}
+\end{example}
+
+\subsection{Skrivarköer}
+
+\index{skrivarkö}När man använder lp skickas inte utskriften direkt
+till skrivaren. I så fall skull man inte kunna skicka iväg utskrifter
+förrän en tidigare utskrift var klar. I stället skickar man utskriften
+till en annan dator där ett särskilt program, en så kallad
+\emindex{skrivardemon} eller \emindex{spooler}, tar hand om den.
+Utskriften placeras i en kö och skickas sedan vidare till
+skrivaren när den är klar med de tidigare utskrifterna.
+
+Varje skrivare har sin egen kö, så det finns lika många köer som det
+finns skrivare i systemet.
+
+Med kommandot \emindex{lpstat} kan man se efter vad
+som finns i skrivarkön.
+
+Mer om utskrifter på unixdatorerna finns på
+http://www.ddg.lth.se/print/linux/.
+
+\subsection{Papper}
+
+\index{papper} DDG fyller på skrivarna med jämna mellanrum, men ibland
+kan det blir tomt i pappersmagasinen. I så fall är det bara att säga till.
+
+\section{Filnamn}
+\label{filnamn}
+I Unix kan ett \rmindex{filnamn} se ut nästan hur som helst. Det finns
+ingen begränsning på hur långa namnen får vara, och formatet kan se ut
+nästan hur som helst. I vissa andra operativsystem måste filnamn se ut
+som \emph{namn.typ}, men i Unix behöver man inte skriva så. Det är
+dock vanligt att man använder den konstruktionen för att tala om vad
+det är för slags fil. Några exempel hittar ni i tabell~\ref{tab:filext}.
+\begin{table}[tbp]
+  \begin{tabularx}{\linewidth}{|lX|}\hline
+    \ST{fil.java}  & Javaprogram \\
+    \ST{fil.c}  & C-program \\
+    \ST{fil.C}  & C++-program \\
+    \ST{fil.cc}  & C++-program \\
+    \ST{fil.txt}  & textfil \\
+    \ST{fil.ps}  & grafikformatet postscript \\
+    \ST{fil.pdf}  & grafikformatet PDF \\
+    \ST{fil.tex}  & källkod till typsättningsprogrammet \LaTeX{} \\
+    \hline
+  \end{tabularx}
+  \caption{Vanliga filnamn}
+  \label{tab:filext}
+\end{table}
+För att undvika problem bör man begränsa sig till att använda följande
+tecken i filnamn: \emph{a--z, A--Z, 0--9, ., --, \_}. Det är i och för
+sig tillåtet att använda t~ex svenska bokstäver i filnamn, men
+eftersom många program är skrivna av amerikaner fungerar det inte
+alltid.
+
+\subsection{Punktfiler}
+
+Om en fil har en punkt först i namnet brukar den kallas för en
+\emindex{punktfil}. Sådana filer syns inte när man skriver
+ls. Dessa filer innehåller inställningar till program och annat som
+mest är i vägen när man listar sina filer. Det går dock att se
+punktfilerna om man skriver \emph{ls -a}.
+\begin{exercise}
+  Använd \emph{ls -a} för att se om du har några punktfiler i din
+  hemmakatalog. Om du hittar några och är nyfiken på vad de är till
+  för kan du fråga din övningsledare.
+\end{exercise}
+
+\subsection{Wildcards}
+
+Det finns två tecken som är speciella i filnamn, nämligen
+\emindex{asterisk} (\ST{*})\hidettindex{*} och
+\emindex{frågetecken} (\ST{?})\hidettindex{?}.
+Dessa har en särskild egenskap, nämligen att de kan motsvara många
+olika tecken. Därför kallas de för \emindex{jokrar} eller
+\emindex{wildcards}. \ST{?} motsvarar ett godtyckligt tecken, medan
+\ST{*} motsvarar noll eller flera godtyckliga tecken. Med hjälp av
+dessa tecken kan man alltså räkna upp flera filer på en kommandorad
+utan att behöva skriva så mycket.
+
+Om vi har följande filer i en katalog:
+
+\begin{tabular}{@{\hspace{5mm}}lll}
+  prog1.p    &  prog2.p    & uppgift.txt\\
+  prog1.o    &  prog2.o    & prog\\
+  profile.txt&  inpris.dat & utpris.dat
+\end{tabular}
+
+så kan vi använda kommandona till vänster i stället för de till höger:
+
+\begin{tabular}{@{\hspace{5mm}}l@{\hspace{2mm}}l}
+  rm prog?.p &   rm prog1.p prog2.p \\
+  rm pr*.*   &   rm profile.txt prog1.o prog1.p prog2.o prog2.p \\
+  rm *.o     &   rm prog1.o prog2.o
+\end{tabular}
+
+Observera att Unix är gjort för programmerare, av programmerare. Det
+betyder bland annat att man anses veta vad gör när man skriver ett
+kommando. Skriver man \emph{rm *} så kommer \textbf{alla} filer att
+försvinna utan att man får en enda fråga. \textbf{Var alltså försiktig
+  med wildcards}.
+\begin{exercise}
+  Vilka filer kommer att tas bort om man skriver \ST{rm *pr*} i
+  ovanstående exempel?
+  \begin{answer}
+    inpris.dat profile.txt prog prog1.o prog1.p prog2.o prog2.p
+    utpris.dat
+  \end{answer}
+\end{exercise}
+
+\section{Kommandon}
+
+Unix skiljer inte på \emindex{kommandon} och
+\emindex{program}\index{programstart}. Alla de kommandon som vi har
+använt hittills (cat, ls, mv, cp, rm, ...) är fristående program, och
+inte på något sätt inbyggda i systemet. Att köra programmet \emph{cat}
+fungerar alltså likadant som att köra ett program som man har skrivit
+själv.
+
+\subsection{Format}
+
+De flesta kommandon består av kommandots eller programmets namn, följt
+av eventuella \emindex{optioner} och \emindex{argument}. Om vi till
+exempel skriver
+\begin{example}
+lo-1\{e01nn\}: \textbf{ls -l adresser}
+\end{example}
+så är:
+\begin{description}
+\item[ls] namnet på programmet som ska köras.
+\item[-l] en option som i detta fall talar om att ls ska använda ett
+  längre format när den visar innehållet.
+\item[adresser] ett argument, i det här fallet namnet på den katalog
+  som vi vill se innehållet i.
+\end{description}
+
+Vissa program kan använda flera optioner samtidigt. Då kan man oftast
+skriva ihop dem. Ordningen mellan optionerna är inte heller viktig för
+det mesta. Följade rader är helt ekvivalenta:
+\begin{ttquote}
+  ls -l -F -C -i adresser \\
+  ls -lF -C -i adresser \\
+  ls -lFCi adresser \\
+  ls -ilCF adresser 
+\end{ttquote}
+Vissa optioner behöver argument. Det har vi redan stött på med lp där
+man kunde skriva
+\begin{example}
+lo-1\{e01nn\}: \textbf{lp -d hacke nisse}
+\end{example}
+I detta fallet är \ST{hacke} ett argument till optionen \ST{-P}. I de
+flesta fall kan man skriva ihop optioner och deras argument:
+\begin{example}
+lo-1\{e01nn\}: \textbf{lp -dhacke nisse}
+\end{example}
+vilket gör att man inte så lätt blandar ihop dem med själva
+programmets argument (i detta fallet filnamnet nisse).
+
+Tänk på att det är skillnad mellan små och stora bokstäver även i
+optioner. \ST{lp~-dhacke} är inte samma sak som \ST{lp -Dhacke}.
+
+\subsection{Starta program}
+
+För att starta ett program skriver man helt enkelt programmets
+namn. Det har vi gjort många gånger nu, med program som \emph{rm}
+eller \emph{cat}.
+
+När vi skapade ett nytt terminalfönster eller tog fram en klocka på
+skärmen körde vi också program, men i stället för att skriva
+programmets namn bad vi fönsterhanteraren att köra programmet åt oss
+genom att välja en rad i en meny. Man kan själv starta nya fönster
+genom att skriva programmets namn i ett terminalfönster.
+\begin{exercise}
+  Kör programmet \emph{xcalendar} genom att skriva \ST{xcalendar} i
+  ditt terminalfönster och trycka \emph{Return}. Vad händer?
+  \begin{answer}
+    Det dyker upp en kalender. \emph{xcalendar} är namnet på
+    programmet som skapar ett kalenderfönster.
+  \end{answer}
+\end{exercise}
+Som ni ser är terminalfönstret låst under tiden som kalendern är
+igång. Därför kan man bara köra ett program åt gången. Det problemet
+är löst i Unix genom att man kan starta program i \emindex{bakgrunden}.
+Det gör man genom att skriva tecknet \emph{\&} efter kommandot. 
+\begin{exercise}
+  Avsluta kalendern genom att klicka på \emph{Q}. Starta den sedan
+  igenom genom att skriva \ST{xcalendar \&}. Kontrollera att du
+  nu kan skriva nya kommandon i terminalfönstret.
+\end{exercise}
+
+\subsection{Var finns programmet?}
+
+Programmet cat består av en fil som heter cat. Men det finns ingen
+sådan fil i din hemmakatalog. Hur bär sig då Unix åt för att hitta
+alla program?
+
+I en variabel som heter \emph{PATH} lagras sökvägen\index{sökväg} till
+ett antal kataloger där systemet letar efter program.
+\begin{exercise}
+  Skriv \ST{echo \$PATH} för att ta reda på vilka kataloger som finns i
+  din sökväg för program. \emindex{echo} är ett program som helt
+  enkelt skriver ut sina argument, prova till exempel med
+  \ST{echo~hej} eller \ST{echo *}
+\end{exercise}
+Som ni ser så finns det rätt många kataloger med program. Bland dem
+finns några som ligger i hemmakatalogen. Där kan man lägga program som
+man vill kunna köra utan att skriva fullständig sökväg.
+
+Observera att den katalog man befinner sig i \emph{inte} ingår i
+sökvägen. Vill man köra programmet \emph{uppgift2} som ligger i den
+aktuella katalogen måste man skriva \emph{./uppgift2}.
+
+\section{Omdirigering av I/O}
+
+Först några ord om rubriken. \rmindex{I/O} betyder Input/Output, dvs in-
+och utmatning till eller från ett program.
+
+Alla program har tillgång till tre kanaler för I/O, en inkanal och två
+utkanaler. Inkanalen kallas \emindex{stdin} (standard input) och är
+normalt kopplad till tangentbordet. Utkanalerna heter \emindex{stdout}
+(standard output) och \emindex{stderr} (standard error) och är normalt
+kopplade till terminalfönstret. På stderr kommer felutskrifter och på
+stdout kommer normal utmatning från ett program.
+
+När man skriver ett kommando kan man med skrivsätten i
+tabell~\ref{tab:io-redir} ange att dessa tre kanaler ska kopplas någon
+annanstans än till tangentbord eller skärm.
+\begin{table}[tbp]
+  \hidettindex{<}\hidettindex{>}\hidettindex{>>}\hidettindex{2>}%
+  \index{>"&@\verb+>"&+}\index{"\"|@\verb+"|+}%
+  \begin{tabularx}{\linewidth}{|lX|}\hline
+    \emph{> fil}  & Koppla stdout till \emph{fil}. Filen skapas om den
+    inte redan finns. Om filen redan finns skrivs den över.\\ 
+    \emph{>{}> fil} & Som ovan, men en existerande fil skrivs inte
+    över. I stället läggs den nya utmatningen till i slutet av filen. \\
+    \emph{2> fil} & Koppla stderr till \emph{fil}. \\
+    \emph{>\& fil} & Koppla både stdout och stderr till \emph{fil}. \\
+    \emph{< fil} & Koppla stdin till \emph{fil}. Gör att ett program
+    läser sin inmatning från \emph{fil}. \\
+    \emph{$\mid$ prog} & koppla stdout till stdin för programmet
+    \emph{prog}. \\
+    \emph{$\mid$\& prog} & koppa stdout och stderr till stdin för programmet
+    \emph{prog}. \\
+    \hline
+  \end{tabularx}
+  \caption{Sätt att dirigera om I/O}
+  \label{tab:io-redir}
+\end{table}
+Den första formen av omdirigering har vi redan stött på när vi skapade
+filer med cat, men resten kräver nog en del förklaring. För att göra
+detta ska vi introducera ett nytt program som heter \emindex{wc} (word
+count). Det räknar tecken, ord och rader i en fil:
+\begin{example}
+lo-1\{e01nn\}: \textbf{wc nisse}
+       3       7      45 nisse
+\end{example}
+Utmatningen berättar att filen \emph{nisse} innehåller 3 rader, 7 ord
+respektive 45 tecken. Nu ska vi dirigera om utmatningen från wc till
+en fil:
+\begin{example}
+lo-1\{e01nn\}: \textbf{wc nisse > utfil}
+lo-1\{e01nn\}: \textbf{cat utfil}
+       3       7      45 nisse
+\end{example}
+I detta fallet hamnade utmatningen från programmet wc i filen
+utfil. Men det är bara stdout vi har dirigerat om, inte stderr, vilket
+vi kan se om vi försöker räkna ord i en fil som inte finns:
+\begin{example}
+lo-1\{e01nn\}: \textbf{wc finns-inte > utfil}
+wc: cannot open finns-inte
+lo-1\{e01nn\}: \textbf{cat utfil}
+lo-1\{e01nn\}: 
+\end{example}
+Som ni ser fick vi en tom utfil eftersom wc inte skrev något på
+stdout.
+
+wc läser normalt sin inmatning från tangentbordet (tills vi avslutar
+med \Ctrl{d}). Hittills har vi dock gett wc ett filnamn som
+argument för att den ska läsa från filen i stället. Alla program har
+dock inte denna möjlighet, och då kan man dirigera om inmatningen så
+att den kommer från en fil:
+\begin{example}
+lo-1\{e01nn\}: \textbf{wc < nisse}
+       3       7      45
+\end{example}
+Nu skrev inte inte wc ut något filnamn eftersom programmet inte vet
+vad filen heter.
+
+\subsection{Pipe}
+
+Den båda sista formerna av omdirigering i tabell~\ref{tab:io-redir} är lite
+speciella. Tecknet $\mid$ brukar kallas för \emindex{pipe} eftersom det
+skapar en slags rörledning för data.
+
+När programmet \emindex{ls} skriver till skärmen får man filnamnen
+uppställda i kolumner. Om man dirigerar om utmatningen skriver
+\emindex{ls} i stället bara ett filnamn per rad. Det kan
+man använda för att räkna filer.
+
+Om vi till exempel vill räkna antalet filer i en katalog kan vi
+använda en temporär fil, och skriva
+\begin{example}
+lo-1\{e01nn\}: \textbf{ls > tmp}
+lo-1\{e01nn\}: \textbf{wc < tmp}
+       7       7      48
+lo-1\{e01nn\}: \textbf{rm tmp}
+\end{example}
+Det blir rätt mycket att skriva för en sådan enkel uppgift.
+Dessutom måste vi skapa en fil och vänta med att räkna orden tills ls
+är klar med att lista dem. Sen blir det en fil för mycket i
+sammanställningen eftersom den temporära filen också räknas.
+
+I stället kan man med en pipe koppla ihop två kommandon. Tecknet
+$\mid$ anger att stdout från det första programmet ska kopplas ihop
+med stdin för det andra:
+\begin{example}
+lo-1\{e01nn\}: \textbf{ls | wc}
+       6       6      44
+\end{example}
+Detta är mycket enklare att skriva och har en finess som inte är helt
+uppenbar, nämligen att båda programmen körs samtidigt. Om man kopplar
+samman två program som tar lång tid kan det gå betydligt fortare att
+använda en pipe än en temporär fil.
+
+Man kan givetvis koppla ihop fler än två program och dessutom
+kombinera det med att läsa från filer:
+\begin{example}
+lo-1\{e01nn\}: \textbf{cat < nisse | wc | cat > utfil}
+lo-1\{e01nn\}: \textbf{cat utfil}
+       3       7      45
+\end{example} 
+Program som cat och wc läser sin inmatning från stdin och skriver sin
+utmatning till stdout. Program av denna typen lämpar sig väl för
+sammankoppling med en pipe, och brukar kallas för \emindex{filter}.
+\begin{exercise}
+  Räkna antalet filer i din hemmakatalog och i katalogen \emph{adresser}.
+\end{exercise}
+\begin{exercise}
+  Vad betyder utmatningen från följande kommando: 
+  \mbox{\ST{wc fil $\mid$ wc}}?
+  \begin{answer}
+    Först räknar man antalet ord i \emph{fil}. Därefter räknar man
+    antalet ord i utmatningen från wc.
+  \end{answer}
+\end{exercise}
+
+\section{Bläddra i filer}
+
+\index{filer!bläddra i}\index{bläddra i filer}Hittills har vi skrivit
+ut filer på skärmen med cat. Det har nackdelen att man inte kan titta
+på stora filer. Prova till exempel att skriva ut systemets ordlista med
+cat:
+\begin{example}
+lo-1\{e01nn\}: \textbf{cat /usr/share/dict/words}
+\end{example}
+För att kunna titta på en så stor fil finns programmet
+\emindex{less}. Vi har faktiskt redan stött på less när vi tittade på
+manualer på sidan~\pageref{man-less}. För att kunna titta på systemets
+ordlista utan att den rullar av skärmen skriver vi:
+\begin{example}
+lo-1\{e01nn\}: \textbf{less /usr/share/dict/words}
+\end{example}
+Nu kan vi gå framåt i texten, sida för sida, med \emph{mellanslag}
+eller \emph{f}, och bakåt med \emph{b}. För att avsluta less trycker
+man \emph{q}.  less har inbyggd hjälp som man får fram om man trycker
+\emph{h}.
+\begin{exercise}
+  Hur gör man för att söka efter en sträng i less? (Använd den inbyggda
+  hjälpen.)
+  \begin{answer}
+    Man skriver \ST{/sträng} för att söka efter \emph{sträng}.
+  \end{answer}
+\end{exercise}
+Less är inte standard i alla Unixsystem, men det finns alltid ett
+program som heter \emph{more} som fungerar ungefär som less men som
+inte har så många finesser. Anledningen till att programmet heter more
+är att det står more nere i hörnet när man använder programmet (prova
+gärna). Det finns rätt många lustigkurrar i Unixbranschen och därför
+fick less heta som det gör.
+
+\section{E-post}
+\index{e-post}\index{email}
+Från och med hösten 2009 använder alla studenter den universitetsgemensamma
+StiL-mailen på http://webmail.student.lu.se/.
+
+Din E-postadress är \emph{förnamn.efternamn.nnn@student.lth.se} där \emph{nnn}
+är tre slumpmässiga siffror.
+
+\begin{exercise}
+  Om ni vill testa webmailen får ni gärna skicka ett brev till
+  författaren till denna handledning. Adressen är
+  \ST{per.foreby@kansli.lth.se}. Skriv lite synpunkter på handledningen så att
+  den kan bli bättre i framtiden. Du kommer att få ett svar på ditt
+  brev, men det kan ta lite tid eftersom det kan bli många brev under
+  en kort tid.
+\end{exercise}
+
+\subsection{Läs dina brev}
+
+E-Postadress hos oss studentens officiella adress. Lärare och administratörer
+på LTH använder den adressen för att komma i kontakt med studenterna.
+Därför är du \textbf{skyldig att bevaka din e-post hos oss}, antingen
+genom att läsa den i webmailen eller genom att vidarebefordra den till en
+annan adress.
+
+\section{Forum}
+
+LTH har ett eget forum för studenterna. Det återfinns på
+http://forum.student.lth.se/. Här kan man diskutera allt som har med studierna
+att göra. DDG läser på forumet och svarar på frågor om datorer.
+
+\section{Information om filer}
+
+\index{filer!information}Genom att ge programmet \emindex{ls} optionen
+\emph{-l} listar den filerna i ett annat format:
+\begin{example}
+\scriptsize
+lo-1\{e01nn\}: \textbf{ls -l nisse}
+-rw-------   1 e01nn  students  45  Jul 28 16:58 nisse
+\end{example}
+Den första kolumnen är information om filskyddet. Det återkommer vi
+till på sidan~\pageref{sec:filskydd}. Sedan följer en etta som vi
+bortser från (skriv \emph{man ls} om du är intresserad). Därefter
+följer filens ägare, gruppen som filen tillhör, filens storlek, datum
+då den senast ändrades och filens namn.
+
+\section{Komprimering av filer}
+
+Varje användare har ett begränsat utrymme tillgängligt för att lagra
+filer. Hur mycket det är, och hur mycket man har använt kan man ta
+reda på med ett program som heter \emindex{quota}:
+\begin{example}
+\scriptsize
+lo-1\{e01nn\}: \textbf{quota}
+Disk quotas for e01nn (uid 25002): 
+Filesystem usage quota limit timeleft files quota limit
+/a/d8       2096 25000 50000            137 10000 20000            
+\end{example}
+Först finns siffrorna för det utrymme som filerna tar upp (räknat i
+kilobyte, dvs 1024 tecken), därefter kommer en grupp siffror som
+gäller antalet filer. Skillnaden mellan \emph{quota} och \emph{limit}
+ligger i att man tillfälligt får gå upp till den övre gränsen. För
+vårt system ligger tidsgränsen på 12 timmar.
+
+Om man har gått över den tillåtna gränsen så kan man inte längre logga
+in på normalt sätt. Genom att markera \emph{Starta
+  endast enkelt fönster} nere i vänstra hörnet på inloggningsskärmen
+kan man logga in tillfälligt för att städa.
+
+Tänk på att program som du har kompilerat tar stor plats. Däremot tar
+inte källkoden (programtexten) upp mycket utrymme. Ta bort alla
+exekverbara program när programmeringsuppgifterna är färdiga så sparar
+du mycket utrymme. Detta gäller för de flesta programmeringsspråken,
+dock inte Java.
+
+Om man har mycket ont om plats och inte kan städa bort något kan man
+komprimera\index{filer!komprimera}\index{komprimera filer} en del av
+sina filer. Det gör man med ett program som heter \emindex{gzip}. Det
+brukar minst kunna halvera storleken på filerna. För att komprimera
+filen \emph{nisse} skriver man
+\begin{example}
+lo-1\{e01nn\}: \textbf{gzip nisse}
+\end{example}
+Filen ersätts av den komprimerade filen som i detta fallet heter
+\emph{nisse.gz}. Den kan man inte använda som vanligt utan att först
+dekomprimera den. För det ändamålet använder man programmet
+\emindex{gunzip}:
+\begin{example}
+lo-1\{e01nn\}: \textbf{gunzip nisse}
+\end{example}
+Om man vill komprimera eller dekomprimera alla filer i en underkatalog
+(och dess underkataloger) lägger man till optionen \emph{-r} (recurse)
+till gzip respektive gunzip:
+\begin{example}
+lo-1\{e01nn\}: \textbf{gzip -r adresser}
+\end{example}
+En komprimerad textfil kan man titta på utan att packa upp den. Det
+gör man med \emindex{zless} eller \emindex{zmore}. Båda programmen gör
+exakt samma sak, nämligen packar upp filen tillfälligt och visar den i
+less.
+\begin{example}
+lo-1\{e01nn\}: \textbf{zmore nisse}
+\end{example}
+
+Observera att den diskkvot som en användare har ska räcka till alla
+filer som produceras under studietiden. Bara i undantagsfall kan man
+få mer utrymme att tillgå och i så fall är det bara tillfälligt medan
+man läser kurser som kräver mycket plats.
+
+Ett bra sätt att ta reda på hur mycket plats ens filer tar är att
+använda programmet \emindex{du} (disk usage):
+\begin{example}
+lo-1\{e01nn\}: \textbf{du}
+4       ./Mail/inbox
+2       ./Mail/drafts
+14      ./Mail
+5       ./adresser
+2       ./temp
+1       ./Calendar
+1       ./News
+22      ./.mozilla
+645     .
+\end{example}
+För varje katalog talar \emph{du} om hur många kilobyte filerna tar,
+och sist av allt kommer summan för alla kataloger.
+
+\section{Filskydd}
+
+\label{sec:filskydd}\index{filskydd}\index{filer!filskydd}
+Nu ska vi återkomma till utmatningen från \emph{ls~-l}:
+\begin{example}
+\scriptsize
+lo-1\{e01nn\}: \textbf{ls -l nisse}
+-rw-------   1 e01nn  students  45  Jul 28 16:58 nisse
+\end{example}
+Den första kolumnen består av 10 tecken. Det första anger filens typ
+(de vanligaste är -- för vanliga filer och \emph{d} för kataloger). De
+övriga nio tecknen anger hur filskyddet ser ut.
+
+I Unix finns det nämligen möjlighet att skydda filer så att
+obehöriga inte kan komma åt dem. För varje fil kan man specificera
+huruvida filen får läsas, skrivas eller exekveras av användare i olika
+kategorier. Dessa kategorier är:
+\begin{description}
+\samepage
+\item[u (user)] Filens ägare
+\item[g (group)] Medlemmar i samma grupp som ägaren. Alla studenter
+  är med i samma grupp (\emph{students}).
+\item[o (others)] Övriga användare
+\end{description}
+De olika rättigheterna anges med följande bokstäver
+\begin{description}
+\samepage
+\item[r (read)] Tillstånd att läsa
+\item[w (write)] Tillstånd att skriva 
+\item[x (execute)] Tillstånd att exekvera (köra) ett program.
+\end{description}
+
+Filskyddet anges i ordningen: användare, grupp och övriga. T~ex
+betyder \ST{rw-r-{}-{}-{}-{}-} att ägaren får läsa och skriva filen, att
+gruppen bara får läsa och att övriga inte har tillgång till filen.
+(Strecket betyder att motsvarande position är avstängd och finns bara
+för att det ska vara lättare att läsa filskyddet.)
+
+För att ändra filskyddet använder man kommandot \emindex{chmod} som
+tar två argument:
+\begin{ttquote}
+  chmod kategorier=rättigheter filnamn
+\end{ttquote}
+Kategorier och rättigheter anges med bokstäverna som förklarats
+ovan. Rättigheter kan vara tomt om man vill stänga av alla rättigheter
+för en kategori. Om man t~ex vill hindra andra än ägaren att komma åt
+en fil skriver man:
+\begin{example}
+lo-1\{e01nn\}: \textbf{chmod go= nisse}
+\end{example}
+
+Nya filer skapas alltid så att de kan exekveras av alla, men
+bara läsas och skrivas av ägaren.
+
+\subsection{Kataloger}
+
+För kataloger\index{katalog!filskydd} betyder filskyddet inte riktigt
+samma sak som för vanliga filer:
+\begin{description}
+\item[r] Tillstånd att läsa i katalogen, dvs se vilka filer som finns
+  i katalogen (t~ex med ls).
+\item[w] Tillstånd att skriva i katalogen, dvs skapa filer och ta bort
+  filer. Det är katalogens rättigheter och inte filens som avgör om en
+  användare kan ta bort en fil.
+\item[x] Tillstånd att ha med katalogen i en sökväg. Om en katalog
+  bara har \emph{x} för en viss kategori kan användarna i den
+  kategorin fortfarande komma åt filer i katalogen om de vet vad
+  filerna heter.
+\end{description}
+
+
+%=============================================================================
+\chapter{Överkurs}
+%=============================================================================
+\label{cha:overkurs}
+
+\section{Specialtecken}
+
+\index{specialtecken}På sidan \pageref{control} berättade vi lite om
+kontrolltecken (som man får fram om man håller nere tangenten
+\textsc{control} och trycker på en annan tangent). När man skriver
+kommandon i ett terminalfönster har dessa tecken (och en del andra) en
+speciell betydelse.
+
+Om man t~ex skriver fel så kan man använda nedanstående kommandon för
+att rätta sina fel innan man trycker \emph{Return}:
+\begin{description}
+\item[Del] Det tecken man senast skrivit raderas. Med upprepade
+  \emph{Del} kan man radera flera tecken.
+\item[Control-u] Hela raden raderas.
+\item[Control-w] Ordet \emph{före} markören raderas.
+\item[Control-k] Allt \emph{efter} markören raderas.
+\end{description}
+Man kan använda piltangenterna $\rightarrow$ och $\leftarrow$ för att
+flytta markören på raden. Om man vill köra gamla kommandon igen kan
+man använda $\uparrow$ för att få tillbaka dem på kommandoraden. För
+varje gång man trycker $\uparrow$ går man ett steg tillbaka i listan
+med gamla kommandon. Om man går för långt kan man trycka $\downarrow$
+för att gå åt andra hållet.
+
+Man kan även söka efter gamla kommandon om man trycker \emph{Control-r} och
+sedan de tecken man söker efter. När man har hittar rätt kommando trycker man
+\emph{Return} för att köra det.
+
+Följande kontrolltecken är också bra att känna till:
+\begin{description}
+\item[Control-c] Avbryter exekveringen av pågående program. Det kan
+  användas när man ångrar sig efter att ha tryckt \emph{Return}, eller
+  om ett program har hängt sig.
+\item[Control-z] Stoppar exekveringen av ett kommando
+  tillfälligt. Genom att skriva \emindex{fg} (foreground) startar man
+  det igen. Man kan även skriva \emindex{bg} (background). Då
+  fortsätter programmet att köra i bakgrunden, precis som om man hade
+  startat det med \emph{\&} sist på raden.
+\item[Control-d] Filslutstecken. Anger att data är slut vid inmatning
+  från tangentbordet.
+\item[Control-l] Tömmer hela terminalfönstret på text.
+\end{description}
+
+Vissa tangenter har extra symboler som t~ex \{, \} eller [. Dessa får
+man fram genom att hålla nere tangenten märkt \emph{Alt Gr}
+samtidigt som kan trycker på respektive tangent.
+
+\subsection{Filnamnskomplettering}
+
+\index{filnamn!komplettering}Att använda långa filnamn är bra eftersom
+man kan beskriva innehållet i en fil på ett entydigt sätt. Det är
+däremot jobbigt att skriva in det långa namnet när man ska använda
+filen.
+
+Då kan man använda sig av filnamnskomplettering. Om man skriver början
+av filnamnet och sedan trycker på tabulatortangenten (märkt \emph{Tab}
+eller $\rightarrow\!\mid\,$) fylls resten av filnamnet i automatiskt. Om
+det man skrev inte var unikt visas en lista över alternativ. Då kan man
+antingen skriva några tecken till coh trycka på \emph{Tab} igen, eller
+omdelelbart trycka på \emph{Tab} för att gå igenom alla möjliga alternativ.
+tecken till och sedan trycka \emph{Tab} igen.
+
+\section{Alias}
+
+Genom att definiera \emindex{alias} kan man skapa egna förkortningar
+av långa kommadon. Alias definieras genom att skriva
+\begin{ttquote}
+  alias namn='sträng'
+\end{ttquote}
+Det får inte finnas några blanktecken före eller efter
+likhetstecknet. Om man skriver \emph{alias} utan argument får man en
+lista över alla alias som finns definierade.
+
+Om man t~ex vill kunna skriva \emph{dir} i stället för \emph{ls~-l}
+kan man definiera ett alias:
+\begin{example}
+  lo-1\{e01nn\}: \textbf{alias dir='ls -l'}
+\end{example}
+
+Ett alias finns bara kvar tills man loggar ut,
+men genom att lägga in dem i initieringsfilen \emindex{.zshrc} kan man
+får dem att definieras varje gång man loggar in (se nedan för
+mer info).
+
+\section{Initieringsfiler}
+
+Många program läser en \emindex{initieringsfil} när de startas. Det
+finns initieringsfiler av två slag: dels filer som innehåller
+kommandon som exekveras när programmet startas, dels filer som
+innehåller parametrar som läses av programmet. De vanligaste
+initieringsfilerna är:
+\begin{description}
+\item[.zprofile] \index{zprofile@.zprofile}Exekveras vid inloggning.
+\item[.zlogout] \index{zlogout@.zlogout}Exekveras vid utloggning.
+\item[.zshenv] \index{zshenv@.zshenv}Exekveras när man startar ett nytt
+  terminalfönster.
+\item[.zshrc] \index{zshrc@.zshrc}Exekveras när man startar ett nytt
+  terminalfönster.
+\end{description}
+
+Om man inte har dessa filer själv används de som finns i katalogen
+\ST{/usr/local/adm} (de har samma namn fast utan inledande punkt). I
+vissa fall ersätter de egna filerna den gemensamma och i andra fall är
+de tillägg till de gemensamma. Ni som är intresserade kan titta på de
+gemensamma filerna och läsa manualerna till \emph{zsh}, \emph{X} och
+\emph{twm}.
+
+Ett varningens ord är på sin plats: Om man har egna initieringsfiler kan man
+få problem. I det läget får man tyvärr räkna med att klara sig själv eftersom
+DDG har inte resurser till att sätta sig in i alla personliga konfigurationer.
+Kopiera alltså inte kompisens fräcka initieringsfiler om du inte känner att du
+har kunskaper nog att ta hand om de problem som kan dyka upp.
+
+\section{Kommandotolken}
+
+Det program som läser och utför kommandon i ett terminalfönster kallas
+för \emindex{kommandotolk} eller \emindex{shell}. Den variant som vi
+använder heter \emindex{zsh} som är en förkortning av \emph{z-shell}.
+
+Alla initieringsfiler som började med \emph{.z} i tabellen ovan läses
+av \emph{zsh} vid inloggning och/eller vid start av en ny
+kommandotolk. I de gemensamma initieringsfilerna finns information om
+vilken typ av saker som är lämpliga att lägga i vilka filer.
+
+Det vanligaste är att man vill ha en egen \emindex{.zshrc} för att
+spara några egna alias och inställningar till zsh. Här är ett exempel
+på inställningar som kan vara bra att ha i sin \emindex{.zshrc} om man
+är nybörjare:
+\begin{ttquote}
+  alias rm='rm -i' \\
+  alias cp='cp -i' \\
+  alias mv='mv -i' \\
+  setopt noclobber\index{setopt}\index{noclobber} \\
+  setopt ignoreeof\index{ignoreeof}
+\end{ttquote}
+De tre första raderna gör att \emindex{rm}, \emindex{cp} och
+\emindex{mv} frågar innan de tar bort eller skriver över en fil.
+\emph{setopt noclobber} gör att man inte kan skriva över en fil genom
+att dirigera om I/O. \emph{setopt ignoreeof} gör att man inte kan
+avsluta ett terminalfönster med \emph{Control-d} utan måste skriva
+\emindex{exit} eller \emindex{logout}.
+
+\section{Institutionernas \\ initieringskommandon}
+
+I många kurser utnyttjas program som behöver särskilda
+inställningar. För att man ska komma åt dessa på ett enkelt sätt utan
+att riskera att de stör övriga inställningar, finns det ett
+initieringskommando för varje institution. De har ett namn som inleds
+med \emph{init} och avslutat med en förkortning för institutionen.
+T~ex skriver man \ST{initcs} för att köra de initieringar som
+behöver för kurser i Datavetenskap.
+
+Lägg absolut inte in dessa kommandon i \emindex{.zshrc} eller någon
+annan initieringsfil. Det kan ställa till stora problem eftersom de
+olika institutionernas initieringskommandon kan komma i konflikt med
+varanandra.
+
+\section{Inloggning på andra \\ datorer}
+
+Ibland kan man behöva logga in på en annan dator än den man sitter
+vid. Det kan vara fallet om man sitter hemma, eller i ett lab på någon
+institution. För detta ändamål
+använder man något av programmet \emindex{ssh} (secure shell client) genom att
+skriva:
+\begin{ttquote}
+  ssh datornamn \\
+\end{ttquote}
+
+Tänk på att man absolut inte får köra tunga program på andra datorer
+på detta sättet. Då kan man störa den som sitter vid den andra datorn.
+I värsta fall kan det medföra att en laboration inte går att
+genomföra. Därför har vi ett antal maskiner
+som endast är avsedda för
+inloggningar utifrån. 
+
+Om man ansluter sig från en dator som befinner sig utanför vårt nätverk så
+måste man dessutom använda login-maskinerna. Datorerna i salarna är nämligen
+inte tillgänliga utifrån. Man når loginmaskinerna under ett gemensamt namn,
+\texttt{login.student.lth.se}.
+
+Man kan ge ett program lite lägre prioritet genom att skriva
+\emindex{nice} först på kommandoraden. Det är att rekommendera om man
+kör program på någon annan dator än den som man sitter
+vid. För att t~ex räkna ord i en fil utan att störa andra på datorn så
+mycket skriver man
+\begin{example}
+lo-1\{e01nn\}: \textbf{nice wc nisse}
+       3       7      45 nisse
+\end{example}
+
+Om datorn känns ovanligt långsam och man misstänker att någon annan
+också kör på den kan man använda kommandot \emindex{who} för att
+kontrollera vem som är inloggad på datorn. Tänk dock på att den
+databas som who använder kan bli korrupt ibland, så risken finns att
+man kan skälla på fel person.
+
+\section{Filöverföring}
+
+\label{ftp}\index{filöverföring}Alla datorer har tillgång till samma
+filer, men om man vill flytta filer till eller från en dator i ett
+annat datorsystem kan man använda programmet \emindex{sftp} (secure file
+transfer protocol). Man startar en överföring med kommandot
+\begin{ttquote}
+  sftp datornamn
+\end{ttquote}
+När förbindelsen är upprättad får man ange sitt användarnamn och
+lösenord på den andra datorn. Därefter kan man använda kommandon som cd, ls,
+get och put. Skriv \emph{man sftp} för mer info.
+sftp kör man mot någon av loginmaskinerna.
+
+\section{Processkontroll}
+
+\index{processer}En dator med unix kör flera program samtidigt genom
+att låta varje program exekvera några millisekunder, och sedan byta
+till nästa program, eller process som det också kallas.
+
+För att se vilka processer man har startat kan man använda programmet
+\emindex{ps} (process status):
+\begin{example}
+lo-1\{e01nn\}: \textbf{ps}
+   PID TTY      TIME CMD
+ 10083 pts/2    0:00 ps
+ 10073 pts/2    0:01 xcalendar
+ 10061 pts/2    0:01 zsh
+\end{example}
+Den första kolumnen visar processens nummer, och den sista det
+kommando man skrev.
+
+Om man vill ta bort en process som har hängt sig använder man
+kommandot \emindex{kill}. Om vi t~ex vill ta bort den process som kör
+kalendern skriver vi:
+\begin{example}
+lo-1\{e01nn\}: \textbf{kill 10073}
+\end{example}
+Om processen fortfarande inte vill dö kan man ta i lite mer:
+\begin{example}
+lo-1\{e01nn\}: \textbf{kill -9 10073}
+\end{example}
+För mer information, titta på manualerna till ps och kill.
+
+\section{Finger}
+
+Med programmet \emindex{finger} kan man ta reda på information om en
+användare. Genom att skriva \emph{finger användare} får man reda på
+lite information om användaren. Om man lägger till optionen \emph{-l}
+får man mer information.
+
+Man kan även skriva \emph{finger Nisse} för att få en lista över alla
+som heter Nisse.
+
+I utmatningen från finger står det om användaren är inloggad. Det gäller bara
+den dator man kör på. För att kolla om någon är inloggad på någon annan dator
+kan man använda \emph{zlocate} (se nedan).
+
+\section{Zephyr}
+
+Vi använder ett system som heter \emindex{zephyr}. Det kan man använda för att
+ta reda på om, och i så fall var, en användare är inloggad, och för att skriva
+meddelanden till en användare. 
+
+För att hitta en användare använder man programmet \emindex{zlocate}:
+\begin{example}
+hacke-3\{e00kk\}: \textbf{zlocate e01nn}
+lo-1  :0      Tue Aug  8 16:06:14 1995
+\end{example}
+Vi får här reda på vilken maskin användaren sitter vid, och när han
+loggade in.
+
+För att skriva ett meddelande till en inloggad användare använder man
+\emindex{zwrite}:
+\begin{example}
+hacke-3\{e00kk\}: \textbf{zwrite e01nn}
+Type your message now.  End with
+  control-D or a dot on a line by itself.
+\textbf{Hej Nisse}
+
+\textbf{Jag ska gå och äta lunch på studiecentrum.}
+\textbf{Ska du följa med?}
+
+\textbf{/Kalle}
+\textbf{\Ctrl{d}}
+e01nn: Message sent
+hacke-3\{e00kk\}:
+\end{example}
+Detta meddelande dyker omedelbart upp på skärmen hos e01nn.
+
+\section{Ordbehandling}
+
+Man brukar skilja på editering och \emindex{ordbehandling}. Editering
+handlar om att redigera rena textfiler, medan ordbehandling betyder
+att man skriver formaterad text, ofta med olika teckensnitt.
+
+\subsection{\LaTeX}
+
+\LaTeX{} fungerar så
+att man skriver sin text med formateringskommandon i en vanlig
+editor. Sedan formaterar man den med kommandot \emindex{latex}. Nu
+kan man studera utseendet på skärmen med \emph{xdvi} eller skriva ut
+den på en laserskrivare med \emph{dvips}. \LaTeX{} är mer eller mindre
+standard som ordbehandlare på tekniska universitet i hela världen.  (Den
+här handledningen är skriven med \LaTeX.)
+
+Vi har en lokal handledning som heter \emph{Att skriva rapporter med
+\LaTeX}. Den används som kurslitteratur i ettan för C och D, men finns även 
+att köpa hos DDG för 10 kronor.
+
+\LaTeX{} är fri programvara, och finns för nästan alla datortyper, så
+den kan man köra även på sin hemdator.
+
+\subsection{LibreOffice}
+
+För er som trivs bättre med ett system som liknar \emph{Microsoft Word}
+så finns \emindex{LibreOffice} tillgängligt i menyerna. LibreOffice är helt
+gratis och klarar i allmänhet av att läsa Microsofts dokument. Det kan med
+andra ord även vara ett alternativ för hemdatorn. LibreOffice finns även för
+Windows och MacOS.
+
+\section{Säkerhetskopiering}
+
+Med jämna mellanrum görs en \rmindex{säkerhetskopiering}
+(\emindex{backup} på engelska) av hela datorsystemet. Då skrivs alla
+ändrade filer till en bandspelare eller till en server med mycket disk.
+Kopieringen görs i första hand för
+att kunna återställa systemet om ett skivminne skulle gå sönder. I mån
+av tid hjälper DDG till med att läsa tillbaka filer som en användare
+''råkat radera'' eller som ''bara försvann''. Det är dock ingenting
+som ni kan räkna med, så om ni har viktiga filer som ni absolut inte
+vill bli av med kan det vara klokt att göra en kopia på en diskett.
+
+För att be att få tillbaka en borttappad fil, skicka ett brev till 
+\ST{ehuset@ddg.lth.se} och tala om vad filen heter, när den försvann och
+när den senast ändrades.
+\index{backup}
+
+
+%=============================================================================
+\chapter{Hemifrån}
+%=============================================================================
+\label{cha:hemifran}
+
+Detta kapitel innehåller lite tips om hur man kan utnyttja datorsystemet
+hemifrån, samt lite allmänt matnyttig information. Texten bygger till 
+delar på ett tidigare häfte gjort av Erik Månsson och Emma Nilsson-Nyman.
+
+\section{E-post hemifrån}
+
+Eftersom Lunds universitets studentmail är webbaserad, så är det enkelt att
+sköta sin e-post från vilken dator som helst.
+
+
+\section{Komma åt filer}
+
+För att titta på, ladda hem eller ladda upp filer så använder man \emph{scp}
+(secure copy) eller \emph{sftp} (secure file transfer protocol). Kör man något
+unixbaserat operativsystem (Linux, BSD, MacosX) hemma har man redan dessa
+program. 
+
+För de som kör windows rekommenderar vi ett program som heter \emph{winscp}.
+Det är gratis och kan laddas ned från \ST{http://winscp.net/}. Man kan även
+använda ett annat program som heter Filezilla
+(\ST{http://filezilla-project.org/}).
+
+Anslutning sker mot loginmaskinerna.
+
+Det går även att komma åt filer med FTPS . Då kör man i stället mot en server
+som heter ftp.student.lth.se. (I vissa programvaror kan det här även kallas
+FTPES, FTP Secure eller FTP-SSL.)
+
+
+\section{Köra program hemifrån}
+
+Det är givetvis bäst att installera de program man behöver på sin hemdator,
+men ibland går det inte. Det kan bero på att programmet behöver filer som bara
+finns på skolan, eller att man av licensskäl inte får köra det hemma.
+
+För att ansluta till datorerna kör man \emph{ssh} (secure shell) mot någon av
+loginmaskinerna. Tänk på att loginmaskinerna inte är gjorda för tunga
+och långa programkörningar, så använd dem bara till lättare program.
+
+Har man windows hemma kan man ladda hem ett ssh-program som heter
+\emph{putty} från \ST{www.chiark.greenend.org.uk/\~{}sgtatham/putty/}.
+
+Starta
+programmet. Gå in under \emph{Session} i vänsterspalten och fyll i
+namnet på loginmaskinen
+under \emph{Host Name (or IP address)}. 
+Kontrollera att \emph{SSH} är markerat som
+\emph{Protocol}. Klicka
+sedan på \emph{Open}. Svara \emph{Yes} i frågerutan och logga sedan in med
+ditt namn och lösenord.
+
+När du nu har anslutit till skolan kan du starta icke X-baserade program
+(program utan grafik) som till exempel egna javaprogram eller matlabprogram
+utan grafik. 
+Om du däremot vill starta program med grafik (till exempel en firefox, egna 
+grafiska java-program eller grafer i Matlab) så behöver du en X-server. 
+(Om du försöker starta ett program som kräver X-server så får du 
+felmeddelandet \emph{Error: Can't open display}.)
+
+
+\section{X-server}
+
+Att installera och konfigurera en X-server kräver en del kunskaper. En bra
+gratis X-server för Windows är \emph{Cygwin/X} som man kan ladda ned på 
+\ST{http://x.cygwin.com/}.
+
+Starta X-servern. Därefter startar du putty, går in under fliken
+\emph{Tunnels} och klickar för \emph{Enable X11 forwarding.} Lämna rutan
+\emph{location} tom och anslut sedan på vanligt sätt till en logindator.
+
+Ett annat gratisalternativ är \emph{Xming} som finns på
+\ST{http://www.straightrunning.com/XmingNotes/}.
+
+Kör du någon unixvariant hemma är det mycket enklare, då har du nämligen redan
+en X-server. I så fall är det bara att logga in som vanligt med ssh men lägga
+till \ST{-X} som argument, alltså \ST{ssh -X username@login.student.lth.se}.
+
+\section{Program hemma}
+
+Det finns en del program som kan laddas hem gratis från skolans servrar. Dels
+från \ST{program.ddg.lth.se}, dels från Studentportalen 
+(\ST{www.student.lu.se}). 
+
+\section{Hjälp och kontakter}
+
+Snabbaste hjälpen får du troligen genom att prata med andra studenter. Om du
+inte hittar någon att fråga så kan du göra det via LTH:s studentforum som
+finns på \ST{forum.student.lth.se}. Där an man diskutera datorer, studier och
+annat.
+
+\subsection{Nyheter}
+Nyheter om datorerna hittar man på DDG:s driftinfo på
+\ST{http://www.ddg.lth.se/}. När det är nätverksproblem eller annat som ligger
+utanför LTH kan man även titta på \ST{http://www.ldc.lu.se/drift}. (LDC är en
+organisation inom universitetet som bland annat sköter nätverken.)
+
+\subsection{LTH:s studentsidor}
+
+På \ST{http://www.student.lth.se/} kommer du åt en massa information, bland
+annat schema, kursplaner och programhemsidor.
+
+\section{Kursanmälan}
+
+Inför varje läsperiod måste du anmäla dig till de kurser du vill läsa. Detta
+gäller dock inte första terminen, men under senare delen av hösten ska du
+anmäla dig till kurser på vårterminen. Kursanmälan görs i
+kursanmälningssystemet som finns i Studentportalen
+(\ST{http://www.student.lu.se/}).
+
+
+\section{Andra tips}
+
+\begin{itemize}
+\item Kopiera filer till en annan användare genom att skriva \ST{scp fil
+username@localhost:} och ange den andra användarens lösenord. Glöm inte
+kolon på slutet. Filen hamnar i användarens hemkatalog.
+\item För att skapa en egen hemsida, följ anvisningarna på
+\ST{http://www.ddg.lth.se/homepage/}.
+\item Kolla kvarvarande diskutrymme med kommandot \emph{quota}. För att hitta
+vilka filer eller kataloger som tar upp plats, kör \ST{du -s .??* * | sort
+-n}
+\item Om du startar ett grafiskt program utan att skriva \& sist på
+kommandoraden kan du trycka Ctrl-Z för att tillfälligt stoppa programmet och
+sedan \ST{bg} för att fortsätta köra det i bakgrunden. Kommandot \ST{fg}
+plockar fram programmet och kör det i förgrunden igen (som om man inte hade
+skrivit \&).
+\end{itemize}
+
+\section{Sektionerna}
+
+Här är länkar till de olika sektionerna:
+
+\begin{tabular}{ll}
+D/C & \ST{http://www.dsek.lth.se/} \\
+E & \ST{http://www.esek.lth.se/} \\
+F/Pi/Nano & \ST{http://www.fsek.lth.se/}
+\end{tabular}
+
+\appendix
+
+\answers
+\label{answers}
+
+\onecolumn
+\printindex
+
+\cleardoublepage
+\thispagestyle{empty}
+\hbox{}
+\newpage
+\onecolumn
+\thispagestyle{empty}
+\hbox{}\vfill\noindent\small
+\centerline{LTH, Tryckeriet i E-huset, Lund \number\year{}}
+
+\end{document}
