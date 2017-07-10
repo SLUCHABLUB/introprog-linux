@@ -1,4 +1,4 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % Written by Per Foreby <per.foreby@kansli.lth.se> 1995-2012
 %
@@ -73,12 +73,12 @@ hur man kan använda det.
 
 \section*{Handledningens uppläggning}
 
-Kapitlen \emph{Grunderna} och \emph{Påbyggnad} ska ungefär
+Denna handledning består av fyra kapitel. Kapitlen \emph{Grunderna} och \emph{Påbyggnad} ska ungefär
 motsvara övningspassen på datastugan. Kapitlet \emph{Överkurs}
 behandlar saker som inte är nödvändiga att lära sig den första veckan,
 men som kan vara bra att kunna för att utnyttja datorerna effektivt under
 utbildningen. Kapitlet \emph{Hemifrån} innehåller en del tips om hur man kan
-komma åt datorerna utifrån.
+komma åt skolans datorer utifrån.
 
 Handledningen innehåller rätt mycket information, och har man inte använt Unix
  tidigare så är det mycket att sätta sig in i.
@@ -110,8 +110,7 @@ uppg1.pas    uppg3.pas
 lo-1\{e01nn\}: \textbf{echo "hej hopp i lingonskogen"}
 hej hopp i lingonskogen
 \end{example}
-Den text som användaren själv skriver in markeras med fetstil. Övrig
-text är sådant som datorn skriver till skärmen.
+\emph{lo-1} är datorns namn och \emph{e01nn} är den inloggade användaren. Den text som användaren själv skriver in markeras med fetstil (här kommandot "ls" för att läsa en katalog och echo för att skriva ut text). Övrig text är sådant som datorn skriver till skärmen.
 
 \section*{Tekniska detaljer}
 
@@ -205,16 +204,16 @@ senare varianten.
 
 I denna introduktion så kommer ni att bekanta er med Linux och dess terminal.
 Terminalen är ett textbaserat program som visar alla sina utskrifter i text
-och man styr den genom att skriva in textkommandon. Terminalen kan kännas 
-svår, komplicerad och skrämmande om man inte har använt den förut, men det 
-är ett verktyg som är bra att kunna. 
+och man styr den genom att skriva in textkommandon. 
+Terminalen är ett naturligt redskap för programmerare, då det finns många program
+som inte har något grafiskt användargränssnitt men som kan köras i terminalen. Detta ger programmeraren en mycket större verktygslåda än en vanlig datoranvändare. 
+Det kan kännas svårt, komplicerat och skrämmande att arbeta med en terminal ifall man inte har använt den förut, men man lär sig efterhand. Denna handledning är ger en stabil grund för vidare lärande.
 
 Linux är utvecklat på ett sätt som gör att terminalen är väldigt kraftfull.
-Man kan göra i stort sett allt via terminalen och allt som man kan göra med
-grafiska program kan man också göra via terminalen. Vissa saker kan vara enklare 
+Man kan göra i stort sett allt via terminalen. Vissa saker kan vara enklare 
 eller bekvämare att göra med ett grafiskt användargränssnitt, men det finns ändå
-många fördelar med terminalen. Några av fördelarna är att man lätt kan skicka data
-mellan olika program om man vill behandla datan på flera sätt, det går snabbt att
+många fördelar med terminale, till exempel så kan man i ett och samma kommando skicka data
+mellan olika program om man vill behandla datan på flera sätt. Det går snabbt att
 göra saker och om man utvecklar ett program så behöver man inte skriva ett 
 användargränssnitt för att testa programmet.
 
@@ -259,19 +258,12 @@ i datorsystemet. Det brukar kallas för att ha ett \emindex{konto}.
 
 En användare identifieras med ett unikt \rmindex{användarnamn}
 (\emindex{username}) och ett \rmindex{lösenord} (\emindex{password}).
-På Lunds universitet är det uppbyggt av tre bokstäver som har med kursen
-eller programmet man läser at göra. Därefter kommer året man fick kontot, och
-sist tre initialer.
-
-Tidigare var våra användarnamn uppbyggda på ett annat sätt. Det är
-därför som exempelstudenten i detta häfte heter \emph{e01nn}.
 
 Alla studenter har förhoppningsvis redan fått sitt konto hemskickat. Annars
-kan man hämta ut det på studiecentrum. Observera att det inte går att logga in
+kan man hämta ut det på studiecentrum (prata med din labbhandledare). Observera att det inte går att logga in
 på datorerna förrän man har hämtat ut sitt LU-kort.
 
-Nu är det dags att använda användarnamnet och lösenordet för att
-\emindex{logga in}\index{inloggning}.
+
 \section{Introduktion till Unix}
 
 Om du skrev rätt användarnamn och lösenord slutförs inloggningen på några
@@ -315,10 +307,10 @@ dator och sedan gå på en föreläsning i två timmar.
 \section{Passerkort}
 
 För att kunna komma in i datorrummen behöver man ett
-\rmindex{passerkort} med en personlig kod. Passerkortet fungerar även
-till ytterdörrarna, så att man kan komma i in i huset på
+\rmindex{passerkort} med en personlig kod. Passerkortet får man på studiecentrum.
+Det fungerar även till ytterdörrarna, så att man kan komma i in i huset på
 kvällar och helger. Kortet fungerar även som ID-kort, och på kvällar och
-helger kan väktarna kräva att man visar upp sitt kort.
+helger kan väktarna kräva att man visar upp sitt kort. 
 
 \section{Lösenord}
 
@@ -357,13 +349,22 @@ När man har bytt sitt lösenord kan det ta någon minut innan det fungerar
 \section{Filer och kataloger}
 
 Hittills har vi bara tittat på grunderna i användargränssnittet. Nu ska vi börja
-titta närmare på det som är en av styrkorna med Unix, nämligen en uppsättning
-enkla kommandon som man skriver i ett terminalfönster. Var för sig är dessa
-kommandon inte så upphetsande, men genom att kombinera dem kan man göra
+titta närmare på styrkorna med Unix terminal. Ni får nu bekanta er med en uppsättning
+enkla kommandon som man skriver i ett terminalfönster. Varje kommando motsvarar ett program som finns som standard i Unix operativsystem.
+Var för sig är dessa kommandon inte så kraftfulla, men genom att kombinera dem kan man göra
 riktigt avancerade saker. (Det här går vi in på mer i detalj i nästa kapitel.)
 
 Det är skillnad mellan stora och små bokstäver, både i filnamn och kommandon, så
 tänk på det när ni testar kommandon.
+
+\subsection{Att starta teminalen}
+Det finns flera olika sätt att starta terminalen. Ifall du använder en dator med linux ubuntu, så kan du öppna ubuntus sökprogram "dash"
+genom att trycka ned windows-knappen på tangentbordet. När dash syns på skärmen skriver du in "terminal" i sökfönstret och startar terminalen.
+Snabbknapparna Ctrl+alt+T brukar också fungera på de flesta linux varianterna.  
+
+När du har lyckats starta en terminal så befinner du dig i din hem-mapp. Med kommandot "ls" kan du läsa vad som finns i mappen. 
+I följande kapitel kommer vi att gå igenom lite grundkommandon för navigering och filhantering. Gå igenom dem noga ifall du inte redan 
+känner dig säker på hur du manövrerar terminalen.
 
 \subsection{Att skapa filer}
 
@@ -400,6 +401,8 @@ Gatvägen 12
 \textbf{\Ctrl{d}}
 lo-1\{e01nn\}: 
 \end{example}
+Här ser man att terminalen inte upprepar varje mening (som den gjorde i förra exemplet), detta är för att
+utskriften från cat dirigeras om (med hjälp av '>') till filen Nisse, istället för att skrivas ut i fönstret.  
 Svenska bokstäver\index{svenska bokstäver} och bokstäver med accenter
 ska man helst undvika i filnamn. Mycket av utvecklingen sker i USA, och det är
 inte alltid utvecklarna tänker på att programmen ska fungera med våra
@@ -449,11 +452,11 @@ kommandot \emindex{ls} vilket är en förkortning för list. \emph{ls}
 skriver ut namnen på alla filer:
 \begin{example}
 lo-1\{e01nn\}: \textbf{ls}
-Mail/   nisse
+Desktop/ Documents/ Downloads/ Pictures/ Videos/   nisse
 lo-1\{e01nn\}: 
 \end{example}
-Filen som heter \emph{Mail} är en katalog som systemet har skapat åt
-dig. Vi åter kommer till den senare.
+Filer som slutar med snedstreck, t.ex. \emph{Documents/} är en katalog som systemet har skapat åt
+dig. Vi åter kommer till dessa senare.
 
 \subsection{Att flytta, döpa om och ta bort filer}
 
@@ -829,13 +832,14 @@ inga alls.
 
 \label{sec:skrivare}\index{skrivare}\index{utskrift}
 I de flesta datorrum finns en \rmindex{laserskrivare}.
-För att kunna skriva ut måste man först köpa utskrifter. Det gör man på
-http://www.lu.se/printaccount. Utskriftssystemet är gemensamt för hela Lunds
+För att kunna skriva ut måste man först köpa utskrifter. Det gör man på: \\
+http://www.student.lth.se/datorsupport/utskrifter-skanning-mm/ \\
+Utskriftssystemet är gemensamt för hela Lunds 
 unviversitet och går alltså även att använda utanför LTH.
 
 \subsection{Att skriva ut}
 
-Från programmen kan man oftast skriva ut via menyerna, men för att skriva ut
+Fsrån programmen kan man oftast skriva ut via menyerna, men för att skriva ut
 en fil från kommandoraden använder man kommandot \emindex{lp} som står
 för line print. För att skriva ut en filen \emph{nisse} skriver man
 \begin{example}
@@ -882,9 +886,6 @@ finns skrivare i systemet.
 
 Med kommandot \emindex{lpstat} kan man se efter vad
 som finns i skrivarkön.
-
-Mer om utskrifter på unixdatorerna finns på
-http://www.ddg.lth.se/print/linux/.
 
 \subsection{Papper}
 
@@ -934,7 +935,7 @@ Unix skiljer inte på \emindex{kommandon} och
 använt hittills (cat, ls, mv, cp, rm, ...) är fristående program, och
 inte på något sätt inbyggda i systemet. Att köra programmet \emph{cat}
 fungerar alltså likadant som att köra ett program som man har skrivit
-själv.
+själv. 
 
 \subsection{Format}
 
@@ -1048,7 +1049,7 @@ annanstans än till tangentbord eller skärm.
   \caption{Sätt att dirigera om I/O}
   \label{tab:io-redir}
 \end{table}
-Den första formen av omdirigering har vi redan stött på när vi skapade
+Den första formen av omdirigering har vi redan stött på när vi skrev till
 filer med cat, men resten kräver nog en del förklaring. För att göra
 detta ska vi introducera ett nytt program som heter \emindex{wc} (word
 count). Det räknar tecken, ord och rader i en fil:
@@ -1136,11 +1137,13 @@ utmatning till stdout. Program av denna typen lämpar sig väl för
 sammankoppling med en pipe, och brukar kallas för \emindex{filter}.
 \section{E-post}
 \index{e-post}\index{email}
-Från och med hösten 2009 använder alla studenter den universitetsgemensamma
-StiL-mailen på http://webmail.student.lu.se/.
-
-Din E-postadress är \emph{förnamn.efternamn.nnn@student.lth.se} där \emph{nnn}
+På lunds universitet används gmail till e-post. (inloggning sker på http://mail.google.com)
+Din E-postadress är \emph{förnamn.efternamn.nnn@student.lu.se} där \emph{nnn}
 är tre slumpmässiga siffror.
+Det går också bra att ange stil-id vid inloggning. (användarnamnet du fick för att logga in på datorerna)
+ange då: \\ \textbf{stil-id@student.lu.se} \\
+i ''email or phone''-fältet, så hänvisas du vidare till Lunds universitets
+inloggningsportal. Därefter anger du enbart stil-id när du fyller i användarnamn.
 
 \subsection{Läs dina brev}
 
@@ -1301,7 +1304,7 @@ De olika rättigheterna anges med följande bokstäver
 \end{description}
 
 Filskyddet anges i ordningen: användare, grupp och övriga. T~ex
-betyder \ST{rw-r-{}-{}-{}-{}-} att ägaren får läsa och skriva filen, att
+betyder \ST{-rw-r-{}-{}-{}-{}-} att ägaren får läsa och skriva filen, att
 gruppen bara får läsa och att övriga inte har tillgång till filen.
 (Strecket betyder att motsvarande position är avstängd och finns bara
 för att det ska vara lättare att läsa filskyddet.)
@@ -1432,7 +1435,7 @@ Då kan man använda sig av filnamnskomplettering. Om man skriver början
 av filnamnet och sedan trycker på tabulatortangenten (märkt \emph{Tab}
 eller $\rightarrow\!\mid\,$) fylls resten av filnamnet i automatiskt. Om
 det man skrev inte var unikt visas en lista över alternativ. Då kan man
-antingen skriva några tecken till coh trycka på \emph{Tab} igen, eller
+antingen skriva några tecken till och trycka på \emph{Tab} igen, eller
 omdelelbart trycka på \emph{Tab} för att gå igenom alla möjliga alternativ.
 tecken till och sedan trycka \emph{Tab} igen.
 
@@ -1454,7 +1457,7 @@ kan man definiera ett alias:
 \end{example}
 
 Ett alias finns bara kvar tills man loggar ut,
-men genom att lägga in dem i initieringsfilen \emindex{.zshrc} kan man
+men genom att lägga in dem i initieringsfilen \emindex{.bashrc} kan man
 får dem att definieras varje gång man loggar in (se nedan för
 mer info).
 
@@ -1466,11 +1469,9 @@ kommandon som exekveras när programmet startas, dels filer som
 innehåller parametrar som läses av programmet. De vanligaste
 initieringsfilerna är:
 \begin{description}
-\item[.zprofile] \index{zprofile@.zprofile}Exekveras vid inloggning.
-\item[.zlogout] \index{zlogout@.zlogout}Exekveras vid utloggning.
-\item[.zshenv] \index{zshenv@.zshenv}Exekveras när man startar ett nytt
-  terminalfönster.
-\item[.zshrc] \index{zshrc@.zshrc}Exekveras när man startar ett nytt
+\item[.bash\_login] \index{bash\_logine@.bash\_login}Exekveras vid inloggning.
+\item[.bash\_logout] \index{bash\_logout@.bash\_logout}Exekveras vid utloggning.
+\item[.bashrc] \index{bashrc@.bashrc}Exekveras när man startar ett nytt
   terminalfönster.
 \end{description}
 
@@ -1478,7 +1479,7 @@ Om man inte har dessa filer själv används de som finns i katalogen
 \ST{/usr/local/adm} (de har samma namn fast utan inledande punkt). I
 vissa fall ersätter de egna filerna den gemensamma och i andra fall är
 de tillägg till de gemensamma. Ni som är intresserade kan titta på de
-gemensamma filerna och läsa manualerna till \emph{zsh}, \emph{X} och
+gemensamma filerna och läsa manualerna till \emph{bash}, \emph{X} och
 \emph{twm}.
 
 Ett varningens ord är på sin plats: Om man har egna initieringsfiler kan man
@@ -1491,16 +1492,16 @@ har kunskaper nog att ta hand om de problem som kan dyka upp.
 
 Det program som läser och utför kommandon i ett terminalfönster kallas
 för \emindex{kommandotolk} eller \emindex{shell}. Den variant som vi
-använder heter \emindex{zsh} som är en förkortning av \emph{z-shell}.
+använder heter \emindex{bash}.
 
-Alla initieringsfiler som började med \emph{.z} i tabellen ovan läses
-av \emph{zsh} vid inloggning och/eller vid start av en ny
+Alla initieringsfiler som började med \emph{.bash} i tabellen ovan läses
+av \emph{bash} vid inloggning och/eller vid start av en ny
 kommandotolk. I de gemensamma initieringsfilerna finns information om
 vilken typ av saker som är lämpliga att lägga i vilka filer.
 
-Det vanligaste är att man vill ha en egen \emindex{.zshrc} för att
-spara några egna alias och inställningar till zsh. Här är ett exempel
-på inställningar som kan vara bra att ha i sin \emindex{.zshrc} om man
+Det vanligaste är att man vill ha en egen \emindex{.bashrc} för att
+spara några egna alias och inställningar till bash. Här är ett exempel
+på inställningar som kan vara bra att ha i sin \emindex{.bashrc} om man
 är nybörjare:
 \begin{ttquote}
   alias rm='rm -i' \\
@@ -1552,7 +1553,12 @@ inloggningar utifrån.
 Om man ansluter sig från en dator som befinner sig utanför vårt nätverk så
 måste man dessutom använda login-maskinerna. Datorerna i salarna är nämligen
 inte tillgänliga utifrån. Man når loginmaskinerna under ett gemensamt namn,
-\texttt{login.student.lth.se}.
+\texttt{login.student.lth.se}.\\
+Hemifrån måste man alltså skriva:
+\begin{ttquote}
+  ssh username@login.student.lth.se \\
+\end{ttquote}
+För mer information om inloggning hemifrån, se bästa kapitel. 
 
 Man kan ge ett program lite lägre prioritet genom att skriva
 \emindex{nice} först på kommandoraden. Det är att rekommendera om man
@@ -1597,7 +1603,7 @@ lo-1\{e01nn\}: \textbf{ps}
    PID TTY      TIME CMD
  10083 pts/2    0:00 ps
  10073 pts/2    0:01 xcalendar
- 10061 pts/2    0:01 zsh
+ 10061 pts/2    0:01 bash
 \end{example}
 Den första kolumnen visar processens nummer, och den sista det
 kommando man skrev.
@@ -1834,10 +1840,16 @@ fönstren.
   Skapa en fil som med samma namn som ditt förnamn och mata in ditt
   namn och adress. Använd gärna aao i stället för åäö om du har svenska
   bokstäver i ditt förnamn, och undvik accenter.
+  \begin{answer}
+    Använd \emph{cat > namn.txt} för att skapa och skriva till filen
+  \end{answer}
 \end{exercise}
 
 \begin{exercise}
   Skriv ut din fil på skärmen och kontrollera att din adress stämmer.
+  \begin{answer}
+    Använd \emph{cat filnamn} för att läsa från filen
+  \end{answer}
 \end{exercise}
 
 
@@ -1854,6 +1866,9 @@ fönstren.
   sedan bort alla kopior så att det bara finns en fil kvar. Under
   tiden kan du använda ls för att se vilka filer som finns och cat för
   att se deras innehåll.
+  \begin{answer}
+    använd \emph{mv} för att döpa om (flytta) din fil, och \emph{cp} för att kopiera den
+  \end{answer}
 \end{exercise}
 
 \begin{exercise}
@@ -1955,6 +1970,9 @@ fönstren.
 
 \begin{exercise}
   Räkna antalet filer i din hemmakatalog och i katalogen \emph{adresser}.
+  \begin{answer}
+    Du kan använda \emph{ls | grep wc} för att räkna filer i aktuell katalog
+  \end{answer}
 \end{exercise}
 \begin{exercise}
   Vad betyder utmatningen från följande kommando: 
