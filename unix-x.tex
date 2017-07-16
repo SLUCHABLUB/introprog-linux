@@ -50,8 +50,8 @@
     \Huge\bfseries Introduktion till \\[2mm]
       LTH:s Unixdatorer \\[7mm]
     \large Lunds universitet \\[5mm]
-    Version 1.67 \\
-    17 juni 2016
+    Version 1.70 \\
+    16 juli 2017
   \end{center}
 \end{titlepage}
 
@@ -143,17 +143,24 @@ gärna emot dem, helst via e-post till \ST{datateknik@kansli.lth.se} eller till
 \index{datorerna}
 
 Unixdatorerna som används på LTH är vanliga PC-maskiner av olika
-modeller och åldrar. Vi har 13 olika unixrum med
+modeller och åldrar. Vi har 12 olika unixrum med
 vardera 10--15 arbetsstationer:
 \begin{description}
-\item[venus, mars, jupiter] \mbox{}\\
+\item[Venus (E:0422)] 
+\item[Mars (E:0421)]
+\item[Jupiter (E:0420)] \mbox{}\\
   Rummen finns i norra delen av E-husets källare. 
-\item[hacke, panter, lo, val, falk, varg] \mbox{}\\
+\item[Hacke (E:0153)]
+\item[Panter (E:0154-E:0155)] 
+\item[Lo (E:0210-0211)]
+\item[Val (E:0507-E:0508)]
+\item[Falk (E:0509-e:0510)]
+\item[Varg (E:0518-E:0519)] \mbox{}\\
   Rum i södra delen av E-husets källare.
-\item[alfa, beta, gamma] \mbox{}\\
+\item[Alfa (E:2119)] 
+\item[Beta (E:2118)] 
+\item[Gamma (E:2121)] \mbox{}\\
   På andra våningen i E-huset.
-\item[backus] \mbox{}\\
-  Rummet finns på bottenvåningen i matematikhuset.
 \end{description}
 
 I E-huset finns även ett antal rum med datorer som kör Windows, och i
@@ -358,11 +365,11 @@ Det är skillnad mellan stora och små bokstäver, både i filnamn och kommandon
 tänk på det när ni testar kommandon.
 
 \subsection{Att starta teminalen}
-Det finns flera olika sätt att starta terminalen. Ifall du använder en dator med linux ubuntu, så kan du öppna ubuntus sökprogram "dash"
-genom att trycka ned windows-knappen på tangentbordet. När dash syns på skärmen skriver du in "terminal" i sökfönstret och startar terminalen.
-Snabbknapparna Ctrl+alt+T brukar också fungera på de flesta linux varianterna.  
+Det finns flera olika sätt att starta terminalen. Ifall du använder en dator med linux ubuntu, så kan du öppna ubuntus sökprogram ''dash''
+genom att trycka ned windows-knappen på tangentbordet. När dash syns på skärmen skriver du in ''terminal'' i sökfönstret och startar terminalen.
+Snabbknapparna \emph{Ctrl+alt+T} brukar också fungera på de flesta linuxvarianterna.  
 
-När du har lyckats starta en terminal så befinner du dig i din hem-mapp. Med kommandot "ls" kan du läsa vad som finns i mappen. 
+När du har lyckats starta en terminal så befinner du dig i din hem-mapp. Med kommandot \emindex{ls}  kan du läsa vad som finns i mappen. 
 I följande kapitel kommer vi att gå igenom lite grundkommandon för navigering och filhantering. Gå igenom dem noga ifall du inte redan 
 känner dig säker på hur du manövrerar terminalen.
 
@@ -452,7 +459,7 @@ kommandot \emindex{ls} vilket är en förkortning för list. \emph{ls}
 skriver ut namnen på alla filer:
 \begin{example}
 lo-1\{e01nn\}: \textbf{ls}
-Desktop/ Documents/ Downloads/ Pictures/ Videos/   nisse
+Desktop/ Documents/ Downloads/ Pictures/\\Videos/   nisse
 lo-1\{e01nn\}: 
 \end{example}
 Filer som slutar med snedstreck, t.ex. \emph{Documents/} är en katalog som systemet har skapat åt
@@ -832,14 +839,17 @@ inga alls.
 
 \label{sec:skrivare}\index{skrivare}\index{utskrift}
 I de flesta datorrum finns en \rmindex{laserskrivare}.
-För att kunna skriva ut måste man först köpa utskrifter. Det gör man på: \\
-http://www.student.lth.se/datorsupport/utskrifter-skanning-mm/ \\
+För att kunna skriva ut så kopplar man sitt kontokort till ett skrivarkonto. 
+Sedan drar universitetet pengar allt eftersom utskrifter görs. Registrering av kontokort gör man på: \\
+http://www.print.lu.se/ \\
+Det finns också möjlighet att köpa krediter på studiecentrum, som man kopplar till sitt utskriftskonto.
 Utskriftssystemet är gemensamt för hela Lunds 
 unviversitet och går alltså även att använda utanför LTH.
 
+
 \subsection{Att skriva ut}
 
-Fsrån programmen kan man oftast skriva ut via menyerna, men för att skriva ut
+Från programmen kan man oftast skriva ut via menyerna, men för att skriva ut
 en fil från kommandoraden använder man kommandot \emindex{lp} som står
 för line print. För att skriva ut en filen \emph{nisse} skriver man
 \begin{example}
@@ -1553,10 +1563,10 @@ inloggningar utifrån.
 Om man ansluter sig från en dator som befinner sig utanför vårt nätverk så
 måste man dessutom använda login-maskinerna. Datorerna i salarna är nämligen
 inte tillgänliga utifrån. Man når loginmaskinerna under ett gemensamt namn,
-\texttt{login.student.lth.se}.\\
+\texttt{login.student.lth.se}.
 Hemifrån måste man alltså skriva:
 \begin{ttquote}
-  ssh username@login.student.lth.se \\
+  ssh username@login.student.lth.se 
 \end{ttquote}
 För mer information om inloggning hemifrån, se bästa kapitel. 
 
