@@ -219,7 +219,7 @@ Det kan kännas svårt, komplicerat och skrämmande att arbeta med en terminal i
 Linux är utvecklat på ett sätt som gör att terminalen är väldigt kraftfull.
 Man kan göra i stort sett allt via terminalen. Vissa saker kan vara enklare 
 eller bekvämare att göra med ett grafiskt användargränssnitt, men det finns ändå
-många fördelar med terminale, till exempel så kan man i ett och samma kommando skicka data
+många fördelar med terminalen, till exempel så kan man i ett och samma kommando skicka data
 mellan olika program om man vill behandla datan på flera sätt. Det går snabbt att
 göra saker och om man utvecklar ett program så behöver man inte skriva ett 
 användargränssnitt för att testa programmet.
@@ -280,7 +280,7 @@ På skärmen finns nu några \emindex{ikoner}, och längst till vänster  en så
 \emindex{panel}.
 
 
-\subsection{Musoperationer}
+\subsection{Musoperationer} %%NOTE: Checka om man kan kopiera med scrollhjulet
 \index{musoperationer}
 
 Musen har tre knappar och fungerar ungefär som i Windows, men med en stor
@@ -329,8 +329,8 @@ otillåtet i ditt namn. \textbf{Avslöja aldrig ditt lösenord för någon.}
 Ibland kan det förekomma mailutskick som säger att man ska skriva in sitt
 lösenord på en websida för att få behålla sitt mailkonto.  Vi skickar
 \textbf{aldrig} ut mail och ber studenterna skriva sina lösenord på en extern
-websida. Det är är bara ett sätta för spammare att komma över konton som sen
-kan användas till att skicka ut massor av spam! Låt er alltså inte luras av de
+websida. Det är bara ett sätt för spammare att komma över konton som sen
+kan användas till att skicka ut massor av spam! Låt dig alltså inte luras av de
 här mailen.
 
 \subsection{Att byta lösenord}
@@ -347,8 +347,8 @@ långa, och innehålla tecken ur tre av följande fyra grupper:
 \end{itemize}
 
 Lösenordsbyte görs på
-
-\url{https://www.passport.lu.se/}
+%% CHANGE: Ändrade adress till fungerande adress
+\url{https://passport.lu.se/}
 
 När man har bytt sitt lösenord kan det ta någon minut innan det fungerar
 överallt.
@@ -365,7 +365,7 @@ Det är skillnad mellan stora och små bokstäver, både i filnamn och kommandon
 tänk på det när ni testar kommandon.
 
 \subsection{Att starta teminalen}
-Det finns flera olika sätt att starta terminalen. Ifall du använder en dator med linux ubuntu, så kan du öppna ubuntus sökprogram ''dash''
+Det finns flera olika sätt att starta terminalen. Ifall du använder en dator med linux Ubuntu, så kan du öppna Ubuntus sökprogram ''dash''
 genom att trycka ned windows-knappen på tangentbordet. När dash syns på skärmen skriver du in ''terminal'' i sökfönstret och startar terminalen.
 Snabbknapparna \emph{Ctrl+alt+T} brukar också fungera på de flesta linuxvarianterna.  
 
@@ -446,7 +446,7 @@ lo-1\{e01nn\}: \textbf{less /usr/share/dict/words}
 \end{example}
 
 Nu kan vi gå framåt i texten, sida för sida, med \emindex{mellanslag} eller
-\emindex{f}, och bakåt med \emindex{b}. För att avsluta less trycker man \emindex{q}.
+\emindex{f}, och bakåt med \emindex{b}. Man kan även scrolla i texten med hjlp av piltangenterna. För att avsluta less trycker man \emindex{q}.
 less har inbyggd hjälp som man får om man trycker \emindex{h}.
 Less är inte standard i alla Unixsystem, men det finns alltid ett
 program som heter \emph{more} som fungerar ungefär som less men som
@@ -793,8 +793,8 @@ För att gå framåt i texten trycker man \emph{f} (forward) eller mellanslag,
 för att gå
 bakåt \emph{b} (backward) och för att avsluta \emph{q} (quit).
 
-
-Det finns även en del hjälp på www.ddg.lth.se.
+%% CHANGE: Ändrade adress
+Det finns även en del hjälp på www.student.lth.se/datorsupport/.
 Här hittar man information om e-post, egna websidor och annat, och på
 förstasidan finns det driftinformation.
 
@@ -811,7 +811,7 @@ själva datorsystemet ska man prata med \emph{Datordriftgruppen (DDG)}.
 LTH och en del annat. Totalt är vi 10 personer. 
 
 \subsection{Felanmälan}
-
+%%NOTE: Ändra denna mailadress?
 Om man vill rapportera ett fel behöver man inte besöka DDG
 personligen. Det går också bra att anmäla fel genom att skicka brev till
 \ST{ehuset@ddg.lth.se}. 
@@ -865,7 +865,7 @@ Nu kommer filen \emph{nisse} att skrivas ut på skrivaren i rummet
 utskriften har skickats iväg får man ett meddelande uppe
 i högra hörnet på skärmen.
 
-För att få lite snyggare formattering av utskrifterna man man använda
+För att få lite snyggare formattering av utskrifterna kan man använda
 programmet \emindex{a2ps}. Till exempel gör man så här för att skriva ut ett
 dokument med två sidor på varje papper:
 \begin{example}
@@ -884,7 +884,7 @@ som heter samma sak som den sal man sitter.
 \subsection{Skrivarköer}
 
 \index{skrivarkö}När man använder lp skickas inte utskriften direkt
-till skrivaren. I så fall skull man inte kunna skicka iväg utskrifter
+till skrivaren. I så fall skulle man inte kunna skicka iväg utskrifter
 förrän en tidigare utskrift var klar. I stället skickar man utskriften
 till en annan dator där ett särskilt program, en så kallad
 \emindex{skrivardemon} eller \emindex{spooler}, tar hand om den.
@@ -1527,20 +1527,20 @@ att dirigera om I/O. \emph{setopt ignoreeof} gör att man inte kan
 avsluta ett terminalfönster med \emph{Control-d} utan måste skriva
 \emindex{exit} eller \emindex{logout}.
 
-\section{Institutionernas \\ initieringskommandon}
-
-I många kurser utnyttjas program som behöver särskilda
-inställningar. För att man ska komma åt dessa på ett enkelt sätt utan
-att riskera att de stör övriga inställningar, finns det ett
-initieringskommando för varje institution. De har ett namn som inleds
-med \emph{init} och avslutat med en förkortning för institutionen.
-T~ex skriver man \ST{initcs} för att köra de initieringar som
-behöver för kurser i Datavetenskap.
-
-Lägg absolut inte in dessa kommandon i \emindex{.zshrc} eller någon
-annan initieringsfil. Det kan ställa till stora problem eftersom de
-olika institutionernas initieringskommandon kan komma i konflikt med
-varanandra.
+%\section{Institutionernas \\ initieringskommandon}
+%
+%I många kurser utnyttjas program som behöver särskilda
+%inställningar. För att man ska komma åt dessa på ett enkelt sätt utan
+%att riskera att de stör övriga inställningar, finns det ett
+%initieringskommando för varje institution. De har ett namn som inleds
+%med \emph{init} och avslutat med en förkortning för institutionen.
+%T~ex skriver man \ST{initcs} för att köra de initieringar som
+%behöver för kurser i Datavetenskap.
+%
+%Lägg absolut inte in dessa kommandon i \emindex{.zshrc} eller någon
+%annan initieringsfil. Det kan ställa till stora problem eftersom de
+%olika institutionernas initieringskommandon kan komma i konflikt med
+%varanandra.
 
 \section{Inloggning på andra \\ datorer}
 
@@ -1798,22 +1798,23 @@ sedan \ST{bg} för att fortsätta köra det i bakgrunden. Kommandot \ST{fg}
 plockar fram programmet och kör det i förgrunden igen (som om man inte hade
 skrivit \&).
 \end{itemize}
-
+%%NOTE: Kolla adresserna
+%%CHANGE: Ändrade adresserna
 \section{Sektionerna}
 
 Här är länkar till de olika sektionerna:
 
 \begin{tabular}{ll}
-F/Pi/Nano & \ST{http://www.fsektionen.se/} \\
-E & \ST{http://eee.esek.se/} \\
-M & \ST{http://www.maskinsektionen.com/} \\
-V & \ST{http://www.v-sektionen.se/} \\
+F/Pi/Nano & \ST{https://www.fsektionen.se/} \\
+E & \ST{https://eee.esek.se/} \\
+M & \ST{https://www.maskinsektionen.com/} \\
+V & \ST{http://www.v-sek.se/} \\
 A & \ST{http://www.asektionen.se/} \\
 K & \ST{http://www.ksek.se/} \\
 D/C & \ST{http://www.dsek.se/} \\
 Dokt & \ST{http://www.dokt.tlth.se/} \\
 Ing & \ST{http://www.ingsekt.se/} \\
-W & \ST{http://www.wsek.tlth.se/} \\
+W & \ST{http://www.wsek.se/} \\
 I & \ST{http://www.isek.se/} \\
 \end{tabular}
 \clearpage
