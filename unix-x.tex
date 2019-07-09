@@ -2,6 +2,7 @@
 %
 % Written by Per Foreby <per.foreby@kansli.lth.se> 1995-2012
 % Updated by Hannes Åström <dat15has@student.lu.se> 2018
+% Updated by Nils Ceberg <ni7228ce-s@student.lu.se> 2019
 %
 % Permission is granted to non-profit organisations to use this
 % code any way you want, as long as you don't pretend you wrote it!
@@ -49,7 +50,7 @@
     \sffamily
     \renewcommand{\baselinestretch}{1.1}
     \Huge\bfseries Introduktion till \\[2mm]
-      LTH:s Unixdatorer \\[7mm]
+      LTH:s Linuxdatorer \\[7mm]
     \large Lunds universitet \\[5mm]
     Version 1.80 \\
     16 juni 2018
@@ -69,8 +70,8 @@
 %=============================================================================
 \label{cha:forord}
 
-Den här handledningen är en kort introduktion till operativsystemet Unix och 
-hur man kan använda det.
+Den här handledningen är en kort introduktion till Linuxbaserade operativsystem och 
+hur man kan använda dem.
 
 \section*{Handledningens uppläggning}
 
@@ -81,7 +82,7 @@ men som kan vara bra att kunna för att utnyttja datorerna effektivt under
 utbildningen. Kapitlet \emph{Hemifrån} innehåller en del tips om hur man kan
 komma åt skolans datorer utifrån.
 
-Handledningen innehåller rätt mycket information, och har man inte använt Unix
+Handledningen innehåller rätt mycket information, och har man inte använt Linux
  tidigare så är det mycket att sätta sig in i.
 Det är därför lämpligt att fortsätta på egen hand med det som ni
 inte hinner med under datastugan.
@@ -116,13 +117,13 @@ hej hopp i lingonskogen
 \section*{Tekniska detaljer}
 
 Denna handledning är producerad med typsättningsprogrammet \LaTeX. De
-teckensnitt som har använts är times, avant garde och courier.
+teckensnitt som har använts är Times, Avant Garde och Courier.
 Skärmbilderna är dumpade från en av våra datorer med programmet
-\emph{import} och sedan redigerade med bildbehandlingsprogrammet gimp.
+\emph{import} och sedan redigerade med bildbehandlingsprogrammet GIMP.
 
 \subsection*{Kommentarer välkomna}
 
-Har ni synpunkter på hur handledningen kan bli bättre, så tar jag
+Har ni synpunkter på hur handledningen kan bli bättre, så tar vi
 gärna emot dem, helst via e-post till \ST{datateknik@kansli.lth.se} eller till
 \ST{infocom@kansli.lth.se}.
 
@@ -143,8 +144,8 @@ gärna emot dem, helst via e-post till \ST{datateknik@kansli.lth.se} eller till
 \subsection{Datorerna}
 \index{datorerna}
 
-Unixdatorerna som används på LTH är vanliga PC-maskiner av olika
-modeller och åldrar. Vi har 12 olika unixrum med
+Linuxdatorerna som används på LTH är vanliga PC-maskiner av olika
+modeller och åldrar. Vi har 12 olika Linuxrum med
 vardera 10--15 arbetsstationer:
 \begin{description}
 \item[Venus (E:0422)] 
@@ -171,7 +172,7 @@ Windowsdatorerna behandlas inte alls i denna handledning.
 LTH har även studentdatorer i Studiecentrum, M-huset, V-huset, A-huset, IKDC,
 Kemicentrum och Fysicum.
 Samtliga dessa datorer kör Windows, så det är alltså bara i E-huset som det
-finns Unixdatorer.
+finns Linuxdatorer.
 
 Som student på LTH kan man använda datorer i alla husen, men programvarorna i
 respektive hus är anpassade till undervisningen i huset. De övriga husen
@@ -187,25 +188,32 @@ till vårt gemensamma datorsystem för att underlätta för studenterna. Sådana
 datorer hittar man bland annat på Fysicum, reglerteknik och elektro- och
 informationsteknik (EIT).
 
-\subsection{Operativsystemet Unix}
+% TODO complete rewrite; reread
+\subsection{Linuxbaserade operativsystem}
 \index{Unix}\index{operativsystem}
 
 Ett operativsystem är en uppsättning program som administrerar datorns
-interna arbete och erbjuder användaren ett antal färdiga kommandon.
+interna arbete och erbjuder användaren ett antal färdiga kommandon. En central
+del av ett operativsystem är kärnan (på engelska \emph{kernel}), som hanterar
+de mest grundläggande uppgifterna såsom exempelvis kommunikationen med hårdvaran
+och schemaläggning av processer.
 
-Våra datorer använder ett operativsystem i Unixfamiljen. Unix
-började utvecklas på Bell Laboratories i USA 1969, och är idag ett
-mycket moget och väl fungerande operativsystem. Unix finns i ett antal
-olika varianter. Sett ur den vanliga användarens synvinkel är dock de
-olika unixdialekterna mycket lika. Det är oftast bara avancerade
-programmerare som märker skillnaderna.
+Våra datorer använder operativsystemet Ubuntu, som är baserat på
+operativsystemkärnan Linux. Linuxbaserade operativsystem tillhör vad som brukar
+kallas de Unix-liknande operativsystemen, då de är baserade på samma konventioner
+och fungerar på i princip samma sätt som det äldre operativsystemet Unix.
 
-Linux är en helt fri variant av Unix. Ibland skiljer man mellan Linux och
-Unix, och då menar man med Unix de kommersiella varianterna, alternativt alla
-som inte är Linux. Andra använder Unix för att beteckna alla unixliknande
-operativsystem, inklusive Linux. I den här handledningen har vi valt den
-senare varianten.
+Unix började utvecklas på Bell Laboratories i USA 1969, och är idag ett
+mycket moget och väl fungerande operativsystem. Unix och Unix-liknande system finns
+i ett antal olika varianter; Linux är till exempel en helt fri variant av
+ett Unix-liknande system vars källkod är öppen (det vill säga fritt tillgänglig).
+Sett ur den vanliga användarens synvinkel är
+dock de olika Unix-dialekterna mycket lika. Det är oftast bara avancerade
+användare som märker skillnaderna. \textbf{Trots att vi i den här handledningen talar
+om Linux är den alltså även fullt applicerbar på andra Unix-liknande system.}
 
+Andra mer eller mindre kända Unix-liknande system är MacOS / OSX, diverse BSD-varianter,
+Solaris, med flera.
 
 \subsection{Linux och terminalen}
 \index{Unix}\index{operativsystem}
@@ -272,7 +280,7 @@ kan man hämta ut det på studiecentrum (prata med din labbhandledare). Observer
 på datorerna förrän man har hämtat ut sitt LU-kort.
 
 
-\section{Introduktion till Unix}
+\section{Introduktion till Linux}
 
 Om du skrev rätt användarnamn och lösenord slutförs inloggningen på några
 sekunder.
@@ -357,8 +365,8 @@ När man har bytt sitt lösenord kan det ta någon minut innan det fungerar
 \section{Filer och kataloger}
 
 Hittills har vi bara tittat på grunderna i användargränssnittet. Nu ska vi börja
-titta närmare på styrkorna med Unix terminal. Ni får nu bekanta er med en uppsättning
-enkla kommandon som man skriver i ett terminalfönster. Varje kommando motsvarar ett program som finns som standard i Unix operativsystem.
+titta närmare på styrkorna med Linux terminal. Ni får nu bekanta er med en uppsättning
+enkla kommandon som man skriver i ett terminalfönster. Varje kommando motsvarar ett program som finns som standard i Unix-liknande operativsystem.
 Var för sig är dessa kommandon inte så kraftfulla, men genom att kombinera dem kan man göra
 riktigt avancerade saker. (Det här går vi in på mer i detalj i nästa kapitel.)
 
@@ -366,7 +374,7 @@ Det är skillnad mellan stora och små bokstäver, både i filnamn och kommandon
 tänk på det när ni testar kommandon.
 
 \subsection{Att starta teminalen}
-Det finns flera olika sätt att starta terminalen. Ifall du använder en dator med linux Ubuntu, så kan du öppna Ubuntus sökprogram ''dash''
+Det finns flera olika sätt att starta terminalen. Ifall du använder en dator med Ubuntu, så kan du öppna Ubuntus sökprogram ''dash''
 genom att trycka ned windows-knappen på tangentbordet. När dash syns på skärmen skriver du in ''terminal'' i sökfönstret och startar terminalen.
 Snabbknapparna \emph{Ctrl+alt+T} brukar också fungera på de flesta linuxvarianterna.  
 
@@ -394,12 +402,12 @@ lo-1\{e01nn\}:
 \end{example}
 För att avsluta inmatningen av text skriver man ett
 \emindex{filslutstecken} (\emindex{end-of-file}) först på en rad. I
-Unix är det tecknet som heter \Ctrl{d}, som man får fram genom att
+Linux är det tecknet som heter \Ctrl{d}, som man får fram genom att
 hålla nere tangenten märkt\label{control} \textsc{control} eller
 \textsc{ctrl} samtidigt som man trycker på tangenten \textsc{d}.
 Nu är det ganska meningslöst att skriva text från tangentbordet till
 skärmen. Vi vill kunna spara texten i en fil. Det gör man genom att
-använda tecknet \ttindex{>} för att tala om för Unix att dirigera om
+använda tecknet \ttindex{>} för att tala om för Linux att dirigera om
 utmatningen från ett program till en fil:
 \begin{example}
 lo-1\{e01nn\}: \textbf{cat > nisse}
@@ -449,7 +457,7 @@ lo-1\{e01nn\}: \textbf{less /usr/share/dict/words}
 Nu kan vi gå framåt i texten, sida för sida, med \emindex{mellanslag} eller
 \emindex{f}, och bakåt med \emindex{b}. Man kan även scrolla i texten med hjlp av piltangenterna. För att avsluta less trycker man \emindex{q}.
 less har inbyggd hjälp som man får om man trycker \emindex{h}.
-Less är inte standard i alla Unixsystem, men det finns alltid ett
+Less är inte standard i alla Unix-liknande system, men det finns alltid ett
 program som heter \emph{more} som fungerar ungefär som less men som
 inte har så många finesser.
 
@@ -622,7 +630,7 @@ nisse    nisse2
 
 Katalogträdet i figur~\ref{fig:hemma} är egentligen bara en del av
 systemets stora filträd. I figur~\ref{fig:tree} ser vi det insatt i
-sitt sammanhang tillsammans med en del andra kataloger i Unixsystemet.
+sitt sammanhang tillsammans med en del andra kataloger i Linuxsystemet.
 \begin{figure}[tbp]
   \centerline{\begin{picture}(80,76)(-40,-25)
       \put(0,48){\makebox(0,0){\ST{/}}}
@@ -702,7 +710,7 @@ sitt sammanhang tillsammans med en del andra kataloger i Unixsystemet.
       \put(-7,-24){\makebox(0,0){\ST{\textbf{fil2}}}}
       \put(6,-24){\makebox(0,0){\ST{\textbf{fil3}}}}
     \end{picture}}
-  \caption{Del av ett katalogträd i ett Unixsystem}
+  \caption{Del av ett katalogträd i ett Linuxsystem}
   \label{fig:tree}
 \end{figure}
 
@@ -776,14 +784,14 @@ så kan vi använda kommandona till vänster i stället för de till höger:
   rm *.o     &   rm prog1.o prog2.o
 \end{tabular}
 
-Observera att Unix är gjort för programmerare, av programmerare. Det
+Observera att Linux är gjort för programmerare, av programmerare. Det
 betyder bland annat att man anses veta vad gör när man skriver ett
 kommando. Skriver man \emph{rm *} så kommer \textbf{alla} filer att
 försvinna utan att man får en enda fråga. \textbf{Var alltså försiktig
   med wildcards}.
 \section{Hjälp}
 
-\index{hjälp}I Unixsystem finns det normalt alltid textbaserade
+\index{hjälp}I Linuxsystem finns det normalt alltid textbaserade
 manualer till alla program.
 Programmet som används heter \emindex{man}. Om man t~ex vill
 lära sig allt om ls skriver man
@@ -903,10 +911,10 @@ kan det blir tomt i pappersmagasinen. I så fall är det bara att säga till.
 
 \section{Filnamn}
 \label{filnamn}
-I Unix kan ett \rmindex{filnamn} se ut nästan hur som helst. Det finns
+I Linux kan ett \rmindex{filnamn} se ut nästan hur som helst. Det finns
 ingen begränsning på hur långa namnen får vara, och formatet kan se ut
 nästan hur som helst. I vissa andra operativsystem måste filnamn se ut
-som \emph{namn.typ}, men i Unix behöver man inte skriva så. Det är
+som \emph{namn.typ}, men i Linux behöver man inte skriva så. Det är
 dock vanligt att man använder den konstruktionen för att tala om vad
 det är för slags fil. Några exempel hittar ni i tabell~\ref{tab:filext}.
 \begin{table}[tbp]
@@ -939,7 +947,7 @@ mest är i vägen när man listar sina filer. Det går dock att se
 punktfilerna om man skriver \emph{ls -a}.
 \section{Kommandon}
 
-Unix skiljer inte på \emindex{kommandon} och
+Linux skiljer inte på \emindex{kommandon} och
 \emindex{program}\index{programstart}. Alla de kommandon som vi har
 använt hittills (cat, ls, mv, cp, rm, ...) är fristående program, och
 inte på något sätt inbyggda i systemet. Att köra programmet \emph{cat}
@@ -1007,7 +1015,7 @@ kommandot.
 \subsection{Var finns programmet?}
 
 Programmet cat består av en fil som heter cat. Men det finns ingen
-sådan fil i din hemmakatalog. Hur bär sig då Unix åt för att hitta
+sådan fil i din hemmakatalog. Hur bär sig då Linux åt för att hitta
 alla program?
 
 I en variabel som heter \emph{PATH} lagras sökvägen\index{sökväg} till
@@ -1293,7 +1301,7 @@ Den första kolumnen består av 10 tecken. Det första anger filens typ
 (de vanligaste är -- för vanliga filer och \emph{d} för kataloger). De
 övriga nio tecknen anger hur filskyddet ser ut.
 
-I Unix finns det nämligen möjlighet att skydda filer så att
+I Linux finns det nämligen möjlighet att skydda filer så att
 obehöriga inte kan komma åt dem. För varje fil kan man specificera
 huruvida filen får läsas, skrivas eller exekveras av användare i olika
 kategorier. Dessa kategorier är:
@@ -1601,7 +1609,7 @@ sftp kör man mot någon av loginmaskinerna.
 
 \section{Processkontroll}
 
-\index{processer}En dator med unix kör flera program samtidigt genom
+\index{processer}En dator med Linux kör flera program samtidigt genom
 att låta varje program exekvera några millisekunder, och sedan byta
 till nästa program, eller process som det också kallas.
 
@@ -1680,7 +1688,7 @@ sköta sin e-post från vilken dator som helst.
 
 För att titta på, ladda hem eller ladda upp filer så använder man \emph{scp}
 (secure copy) eller \emph{sftp} (secure file transfer protocol). Kör man något
-unixbaserat operativsystem (Linux, BSD, MacosX) hemma har man redan dessa
+Unix-liknande operativsystem (Linux, BSD, MacOS / OSX) hemma har man redan dessa
 program. 
 
 Om man vill ladda upp en fil som heter \emindex{Main.java} så kan man göra följande:
@@ -1720,7 +1728,7 @@ Kontrollera att \emph{SSH} är markerat som
 sedan på \emph{Open}. Svara \emph{Yes} i frågerutan och logga sedan in med
 ditt namn och lösenord.
 
-Om man kör Unix så räcker det med att man skriver 
+Om man kör Linux så räcker det med att man skriver 
 \ST{ssh  username@login.student.lth.se} i en terminal för att ansluta.
 
 När du nu har anslutit till skolan kan du starta icke X-baserade program
@@ -1745,7 +1753,8 @@ Starta X-servern. Därefter startar du putty, går in under fliken
 Ett annat gratisalternativ är \emph{Xming} som finns på
 \ST{http://www.straightrunning.com/XmingNotes/}.
 
-Kör du någon unixvariant hemma är det mycket enklare, då har du nämligen redan
+%TODO wayland?
+Kör du någon Linux hemma är det mycket enklare - då har du nämligen redan
 en X-server. I så fall är det bara att logga in som vanligt med ssh men lägga
 till \ST{-X} som argument, alltså \ST{ssh -X username@login.student.lth.se}.
 
