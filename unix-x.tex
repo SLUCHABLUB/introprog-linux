@@ -3,6 +3,7 @@
 % Written by Per Foreby <per.foreby@kansli.lth.se> 1995-2012
 % Updated by Hannes Åström <dat15has@student.lu.se> 2018
 % Updated by Nils Ceberg <ni7228ce-s@student.lu.se> 2019
+% Updated by Roger Henriksson <roger.henriksson@cs.lth.se> 2020
 %
 % Permission is granted to non-profit organisations to use this
 % code any way you want, as long as you don't pretend you wrote it!
@@ -52,8 +53,8 @@
     \Huge\bfseries Introduktion till \\[2mm]
       LTH:s Linuxdatorer \\[7mm]
     \large Lunds universitet \\[5mm]
-    Version 1.90 \\
-    31 juli 2019
+    Version 1.92 \\
+    10 augusti 2020
   \end{center}
 \end{titlepage}
 
@@ -375,9 +376,8 @@ Det är skillnad mellan stora och små bokstäver, både i filnamn och kommandon
 tänk på det när ni testar kommandon.
 
 \subsection{Att starta teminalen}
-Det finns flera olika sätt att starta terminalen. Ifall du använder en dator med Ubuntu, så kan du öppna Ubuntus sökprogram ''dash''
-genom att trycka ned windows-knappen på tangentbordet. När dash syns på skärmen skriver du in ''terminal'' i sökfönstret och startar terminalen.
-Snabbknapparna \emph{Ctrl+alt+T} brukar också fungera på de flesta linuxvarianterna.  
+Det finns flera olika sätt att starta terminalen. Ett sätt är att högerklicka med musen när muspekaren befinner sig på skärmbakgrunden (''skrivbordsytan''). Då får du upp en pop-up-meny i vilken du kan välja ''Open Terminal''.
+Alternativt kan du använda knappkombinationen \emph{Ctrl+Alt+T} (Håll ner knapparna märkta Ctrl och Alt samtidigt som du trycker på T) som brukar fungera på de flesta linuxvarianterna inklusive den vi använder .  
 
 När du har lyckats starta en terminal så befinner du dig i din hem-mapp. Med kommandot \emindex{ls}  kan du läsa vad som finns i mappen. 
 I följande kapitel kommer vi att gå igenom lite grundkommandon för navigering och filhantering. Gå igenom dem noga ifall du inte redan 
@@ -419,7 +419,7 @@ Gatvägen 12
 lo-1\{e01nn\}: 
 \end{example}
 Här ser man att terminalen inte upprepar varje mening (som den gjorde i förra exemplet). Detta är för att
-utskriften från cat dirigeras om (med hjälp av '>') till filen Nisse, istället för att skrivas ut i fönstret.  
+utskriften från cat dirigeras om (med hjälp av '>') till filen nisse, istället för att skrivas ut i fönstret.  
 Svenska bokstäver\index{svenska bokstäver} och bokstäver med accenter
 ska man helst undvika i filnamn. Mycket av utvecklingen sker i USA, och det är
 inte alltid utvecklarna tänker på att programmen ska fungera med våra
@@ -857,19 +857,11 @@ unviversitet och går alltså även att använda utanför LTH.
 
 Från programmen kan man oftast skriva ut via menyerna, men för att skriva ut
 en fil från kommandoraden använder man kommandot \emindex{lp} som står
-för line print. För att skriva ut en filen \emph{nisse} skriver man
+för line print. För att skriva ut en fil \emph{nisse} skriver man
 \begin{example}
 lo-1\{e01nn\}: \textbf{lp nisse}
 \end{example}
-då kommer utskriften på den närmaste skrivaren. Vill man skicka
-utskriften till en viss skrivare anger man dess namn:
-\begin{example}
-lo-1\{e01nn\}: \textbf{lp -d hacke nisse}
-\end{example}
-Nu kommer filen \emph{nisse} att skrivas ut på skrivaren i rummet
-\emph{hacke} (alla skrivare heter likadant som det rum de står i). När
-utskriften har skickats iväg får man ett meddelande uppe
-i högra hörnet på skärmen.
+då kommer utskriften att skickas till PaperCut och köas upp i väntan på att du aktiverar utskriften på valfri skrivare, se nedan.
 
 För att få lite snyggare formattering av utskrifterna kan man använda
 programmet \emindex{a2ps}. Till exempel gör man så här för att skriva ut ett
@@ -884,24 +876,12 @@ lo-1\{e01nn\}: \textbf{a2ps --help}
 
 Självklart går det bra att skriva ut från andra program som stödjer utskift
 så som Adobe Reader eller en texteditor. För att skriva ut från dessa program
-så trycker man på \emindex{skriv ut} i programmen och sedan väljer den skrivare
-som heter samma sak som den sal man sitter.
+så trycker man på \emindex{skriv ut} i programmen och sedan väljer PaperCut som skrivare.
 
 \subsection{Skrivarköer}
 
 \index{skrivarkö}När man använder lp skickas inte utskriften direkt
-till skrivaren. I så fall skulle man inte kunna skicka iväg utskrifter
-förrän en tidigare utskrift var klar. I stället skickar man utskriften
-till en annan dator där ett särskilt program, en så kallad
-\emindex{skrivardemon} eller \emindex{spooler}, tar hand om den.
-Utskriften placeras i en kö och skickas sedan vidare till
-skrivaren när den är klar med de tidigare utskrifterna.
-
-Varje skrivare har sin egen kö, så det finns lika många köer som det
-finns skrivare i systemet.
-
-Med kommandot \emindex{lpstat} kan man se efter vad
-som finns i skrivarkön.
+till skrivaren. I stället köas den upp i utskriftssystemet (PaperCut). För att verkligen få ut utskriften så går du till önskad skrivare och följer instruktionerna som är anslagna där för att aktivera utskriften.
 
 \subsection{Papper}
 
@@ -979,18 +959,18 @@ det mesta. Följade rader är helt ekvivalenta:
   ls -lFCi adresser \\
   ls -ilCF adresser 
 \end{ttquote}
-Vissa optioner behöver argument. Det har vi redan stött på med lp där
-man kunde skriva
-\begin{example}
-lo-1\{e01nn\}: \textbf{lp -d hacke nisse}
-\end{example}
-I detta fallet är \ST{hacke} ett argument till optionen \ST{-d}. I de
-flesta fall kan man skriva ihop optioner och deras argument:
-\begin{example}
-lo-1\{e01nn\}: \textbf{lp -dhacke nisse}
-\end{example}
-vilket gör att man inte så lätt blandar ihop dem med själva
-programmets argument (i detta fallet filnamnet nisse).
+%Vissa optioner behöver argument. Det har vi redan stött på med lp där
+%man kunde skriva
+%\begin{example}
+%lo-1\{e01nn\}: \textbf{lp -d hacke nisse}
+%\end{example}
+%I detta fallet är \ST{hacke} ett argument till optionen \ST{-d}. I de
+%flesta fall kan man skriva ihop optioner och deras argument:
+%\begin{example}
+%lo-1\{e01nn\}: \textbf{lp -dhacke nisse}
+%\end{example}
+%vilket gör att man inte så lätt blandar ihop dem med själva
+%programmets argument (i detta fallet filnamnet nisse).
 
 Tänk på att det är skillnad mellan små och stora bokstäver även i
 optioner. \ST{lp~-dhacke} är inte samma sak som \ST{lp -Dhacke}.
@@ -1018,11 +998,15 @@ sådan fil i din hemmakatalog. Hur bär sig då Linux åt för att hitta
 alla program?
 
 I en variabel som heter \emph{PATH} lagras sökvägen\index{sökväg} till
-ett antal kataloger där systemet letar efter program.
+ett antal kataloger där systemet letar efter program. Du kan se vilka dessa kataloger är genom att skriva ut innehållet i variabeln:
+
+\begin{example}
+lo-1\{e01nn\}: \textbf{echo \$PATH}
+\end{example}
 
 
 Som ni ser så finns det rätt många kataloger med program. Bland dem
-finns några som ligger i hemmakatalogen. Där kan man lägga program som
+brukar det finnas några som ligger i hemmakatalogen. Där kan man lägga program som
 man vill kunna köra utan att skriva fullständig sökväg.
 
 Observera att den katalog man befinner sig i \emph{inte} ingår i
@@ -1153,15 +1137,8 @@ utmatning till stdout. Program av denna typen lämpar sig väl för
 sammankoppling med en pipe, och brukar kallas för \emindex{filter}.
 \section{E-post}
 \index{e-post}\index{email}
-På Lunds universitet används gmail till e-post. (inloggning sker på http://mail.google.com)
-Din E-postadress är \emph{förnamn.efternamn.nnn@student.lu.se} där \emph{nnn}
-är tre slumpmässiga siffror.
-Det går också bra att ange stil-id vid inloggning. (användarnamnet du fick för att logga in på datorerna)
-ange då: \\ \textbf{stil-id@student.lu.se} \\
-i ''email or phone''-fältet, så hänvisas du vidare till Lunds universitets
-inloggningsportal. Därefter anger du enbart stil-id när du fyller i användarnamn.
 
-\subsection{Läs dina brev}
+När du börjar på LTH får du ett eget e-postkonto. Du bör ha fått separat information om hur du gör för att logga in och läsa din e-post.
 
 E-postadressen är studentens officiella adress. Lärare och administratörer
 på LTH använder den adressen för att komma i kontakt med studenterna.
@@ -1169,11 +1146,11 @@ Därför är du \textbf{skyldig att bevaka din e-post hos oss}, antingen
 genom att läsa den i webmailen eller genom att vidarebefordra den till en
 annan adress. Fråga din övningsledare om du vill ha hjälp att forwarda din e-post till just din adress.
 
-\section{Forum}
-
-LTH har ett eget forum för studenterna. Det återfinns på
-http://forum.student.lth.se/. Här kan man diskutera allt som har med studierna
-att göra. DDG läser på forumet och svarar på frågor om datorer.
+%\section{Forum}
+%
+%LTH har ett eget forum för studenterna. Det återfinns på
+%http://forum.student.lth.se/. Här kan man diskutera allt som har med studierna
+%att göra. DDG läser på forumet och svarar på frågor om datorer.
 
 \section{Information om filer}
 
@@ -1338,9 +1315,6 @@ en fil skriver man:
 lo-1\{e01nn\}: \textbf{chmod go= nisse}
 \end{example}
 
-Nya filer skapas alltid så att de kan exekveras av alla, men
-bara läsas och skrivas av ägaren.
-
 \subsection{Kataloger}
 
 För kataloger\index{katalog!filskydd} betyder filskyddet inte riktigt
@@ -1391,6 +1365,19 @@ använda sig av ett wildcard. Det skulle kunna se ut på följande sätt:
 lo-1\{e01nn\}: \textbf{javac *.java}
 \end{example}
 Då kommer alla java-filer i mappen att kompileras.
+
+\section{Scala i terminalen}
+\index{Scala i terminalen}
+Program skrivna i Scala kan kompileras och köras på motsvarande sätt som om de var skrivna i Java. För att kompilera \texttt{Main.scala} så skriver man:
+\begin{example}
+lo-1\{e01nn\}: \textbf{scalac Main.scala}
+\end{example}
+För att köra programmet skriver man sedan (om klassen som innehåller main-metoden heter Main):
+\begin{example}
+lo-1\{e01nn\}: \textbf{scala Main}
+\end{example}
+
+Se kursboken i EDAA45 Programmering, grundkurs för mer information om hur du programmerar i Scala.
 
 
 \section{Specialtecken}
@@ -1491,16 +1478,9 @@ initieringsfilerna är:
   terminalfönster.
 \end{description}
 
-Om man inte har dessa filer själv används de som finns i katalogen
-\ST{/usr/local/adm} (de har samma namn fast utan inledande punkt). I
-vissa fall ersätter de egna filerna den gemensamma och i andra fall är
-de tillägg till de gemensamma. Ni som är intresserade kan titta på de
-gemensamma filerna och läsa manualerna till \emph{bash}, \emph{X} och
-\emph{twm}.
-
 Ett varningens ord är på sin plats: Om man har egna initieringsfiler kan man
 få problem. I det läget får man tyvärr räkna med att klara sig själv eftersom
-DDG har inte resurser till att sätta sig in i alla personliga konfigurationer.
+DDG inte har resurser till att sätta sig in i alla personliga konfigurationer.
 Kopiera alltså inte kompisens fräcka initieringsfiler om du inte känner att du
 har kunskaper nog att ta hand om de problem som kan dyka upp.
 
@@ -1592,20 +1572,6 @@ kontrollera vem som är inloggad på datorn. Tänk dock på att den
 databas som who använder kan bli korrupt ibland, så risken finns att
 man kan skälla på fel person.
 
-\section{Filöverföring}
-
-\label{ftp}\index{filöverföring}Alla datorer har tillgång till samma
-filer, men om man vill flytta filer till eller från en dator i ett
-annat datorsystem kan man använda programmet \emindex{sftp} (secure file
-transfer protocol). Man startar en överföring med kommandot
-\begin{ttquote}
-  sftp datornamn
-\end{ttquote}
-När förbindelsen är upprättad får man ange sitt användarnamn och
-lösenord på den andra datorn. Därefter kan man använda kommandon som cd, ls,
-get och put. Skriv \emph{man sftp} för mer info.
-sftp kör man mot någon av loginmaskinerna.
-
 \section{Processkontroll}
 
 \index{processer}En dator med Linux kör flera program samtidigt genom
@@ -1690,7 +1656,7 @@ För att titta på, ladda hem eller ladda upp filer så använder man \emph{scp}
 Unix-liknande operativsystem (Linux, BSD, MacOS / OSX) hemma har man redan dessa
 program. 
 
-Om man vill ladda upp en fil som heter \emindex{Main.java} så kan man göra följande:
+Om man vill ladda upp en fil som heter \emph{Main.java} så kan man göra följande:
 
 \ST{scp ./Main.java username@login.student.lth.se:}
 
@@ -1727,11 +1693,11 @@ Kontrollera att \emph{SSH} är markerat som
 sedan på \emph{Open}. Svara \emph{Yes} i frågerutan och logga sedan in med
 ditt namn och lösenord.
 
-Om man kör Linux så räcker det med att man skriver 
+Om man kör Linux eller MacOS så räcker det med att man skriver 
 \ST{ssh  username@login.student.lth.se} i en terminal för att ansluta.
 
 När du nu har anslutit till skolan kan du starta icke X-baserade program
-(program utan grafik) som till exempel egna javaprogram eller matlabprogram
+(program utan grafik) som till exempel egna scala- eller javaprogram
 utan grafik. 
 Om du däremot vill starta program med grafik (till exempel en firefox, egna 
 grafiska java-program eller grafer i Matlab) så behöver du en X-server. 
@@ -1752,8 +1718,10 @@ Starta X-servern. Därefter startar du putty, går in under fliken
 Ett annat gratisalternativ är \emph{Xming} som finns på
 \ST{http://www.straightrunning.com/XmingNotes/}.
 
+För MacOS finns X-servern XQuartz att ladda ner från \ST{http://www.xquartz.org/}. Den är gratis att installera och använda. När du startar XQuartz får du även upp ett terminalfönster. Från detta kan du ansluta till LTHs inloggningsserver med ssh på samma sätt som om du kör Linux, se nedan.
+
 %%NOTE: Wayland?
-Kör du någon Linux hemma är det mycket enklare - då har du nämligen redan
+Kör du någon variant Linux hemma är det mycket enklare - då har du nämligen redan
 en X-server. I så fall är det bara att logga in som vanligt med ssh men lägga
 till \ST{-X} som argument, alltså \ST{ssh -X username@login.student.lth.se}.
 
@@ -1765,10 +1733,7 @@ från \ST{program.ddg.lth.se}, dels från Studentportalen
 
 \section{Hjälp och kontakter}
 
-Snabbaste hjälpen får du troligen genom att prata med andra studenter. Om du
-inte hittar någon att fråga så kan du göra det via LTH:s studentforum som
-finns på \ST{forum.student.lth.se}. Där an man diskutera datorer, studier och
-annat.
+Snabbaste hjälpen får du troligen genom att prata med andra studenter. Du kan även fråga dina lärare eller handledare som säkert kan guida dig i rätt riktning.
 
 \subsection{Nyheter}
 Nyheter om datorerna hittar man på DDG:s driftinfo på
@@ -2001,14 +1966,6 @@ fönstren.
   \end{answer}
 \end{exercise}
 
-\begin{exercise}
-  Om ni vill testa webmailen får ni gärna skicka ett brev till
-  författaren av denna handledning. Adressen är
-  \ST{ni7228ce-s@student.lu.se}. Skriv lite synpunkter på handledningen så att
-  den kan bli bättre i framtiden. Du kommer att få ett svar på ditt
-  brev, men det kan ta lite tid eftersom det kan bli många brev under
-  en kort tid.
-\end{exercise}
 
 
 \appendix
