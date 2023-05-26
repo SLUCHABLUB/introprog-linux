@@ -11,6 +11,9 @@ unix-x.ps: unix-x.dvi
 unix-x.pdf: unix-x.ps
 	ps2pdf unix-x.ps unix-x.pdf
 
+pdf: unix-x.ps
+	ps2pdf unix-x.ps unix-x.pdf
+
 print: unix-x.pdf
 
 xdvi:
