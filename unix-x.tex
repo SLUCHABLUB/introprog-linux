@@ -4,6 +4,7 @@
 % Updated by Hannes Åström <dat15has@student.lu.se> 2018
 % Updated by Nils Ceberg <ni7228ce-s@student.lu.se> 2019
 % Updated by Roger Henriksson <roger.henriksson@cs.lth.se> 2020
+% Currently maintained by Mattias Nordahl <mattias.nordahl@cs.lth.se>
 %
 % Permission is granted to non-profit organisations to use this
 % code any way you want, as long as you don't pretend you wrote it!
@@ -547,7 +548,7 @@ För att skapa en katalog\index{katalog!skapa} använder man kommandot
 (\emph{remove directory}) tar man bort katalogen\index{katalog!ta
   bort}.
 
-Om man t~ex vill skapa en katalog för att lagra adresser till sina
+Om man t.ex. vill skapa en katalog för att lagra adresser till sina
 vänner skriver man:
 \begin{example}
   lo-1\{e01nn\}: \textbf{mkdir adresser}
@@ -562,7 +563,7 @@ Lägg märke till att det finns ett
 ingår inte i filnamnet, utan det är ls som lägger till det för att
 visa att det är en katalog och inte en vanlig fil. På samma sätt får
 man en asterisk (\ttindex{*}) sist på ett filnamn om filen är
-ett exekverbart program (t~ex programmet \texttt{rm} eller ett program
+ett exekverbart program (t.ex. programmet \texttt{rm} eller ett program
 som man har gjort själv i någon kurs).
 På nyare system är det även vanligt att olika typer av filer/kataloger
 har olika färg på den text som visas av ls.
@@ -614,7 +615,7 @@ Som ni ser använder man snedstreck (\ST{/}) för att skilja katalog och
 filnamn åt. Därför kan aldrig ett snedstreck ingå i ett filnamn.
 
 Om man vill kalla den kopierade filen något annat än originalet
-skriver man t~ex
+skriver man t.ex.
 \begin{example}
   lo-1\{e01nn\}: \textbf{cp nisse adresser/nisse2}
 \end{example}
@@ -797,7 +798,7 @@ försvinna utan att man får en enda fråga. \textbf{Var alltså försiktig
 
 \index{hjälp}I Linuxsystem finns det normalt alltid textbaserade
 manualer till alla program.
-Programmet som används heter \emindex{man}. Om man t~ex vill
+Programmet som används heter \emindex{man}. Om man t.ex. vill
 lära sig allt om ls skriver man
 \begin{example}
   lo-1\{e01nn\}: \textbf{man ls}
@@ -917,7 +918,7 @@ det är för slags fil. Några exempel hittar ni i tabell~\ref{tab:filext}.
 \end{table}
 För att undvika problem bör man begränsa sig till att använda följande
 tecken i filnamn: \emph{a--z, A--Z, 0--9, ., --, \_}. Det är i och för
-sig tillåtet att använda t~ex svenska bokstäver i filnamn, men
+sig tillåtet att använda t.ex. svenska bokstäver i filnamn, men
 eftersom många program är skrivna av amerikaner fungerar det inte
 alltid.
 
@@ -994,7 +995,7 @@ ett terminalfönster.
 När man startar program i terminalen så kan det hända att terminalfönstret låser sig
 tills programmet har avslutats. Detta löser man genom att starta programmet i
 \emindex{bakgunden} och detta gör man genom att skriva tecknet \& efter
-kommandot, t~ex
+kommandot, t.ex.
 \begin{example}
   lo-1\{e01nn\}: \textbf{gedit &}
 \end{example}
@@ -1141,7 +1142,7 @@ tangentbordet, för att uppnå samma sak:
   3       7      45
 \end{example}
 Nu skrev inte wc ut något filnamn eftersom programmet inte vet
-vad filen heter.
+vad filen heter, det fick bara \emph{innehållet} i filen till stdin.
 
 \subsection{Pipe}
 
@@ -1350,7 +1351,7 @@ De olika rättigheterna anges med följande bokstäver
   \item[x (execute)] Tillstånd att exekvera (köra) ett program.
 \end{description}
 
-Filskyddet anges i ordningen: användare, grupp och övriga. T~ex
+Filskyddet anges i ordningen: användare, grupp och övriga. t.ex.
 betyder \ST{-rw-r-{}-{}-{}-{}-} att ägaren får läsa och skriva filen, att
 gruppen bara får läsa och att övriga inte har tillgång till filen.
 (Strecket betyder att motsvarande position är avstängd och finns bara
@@ -1363,7 +1364,7 @@ tar två argument:
 \end{ttquote}
 Kategorier och rättigheter anges med bokstäverna som förklarats
 ovan. Rättigheter kan vara tomt om man vill stänga av alla rättigheter
-för en kategori. Om man t~ex vill hindra andra än ägaren att komma åt
+för en kategori. Om man t.ex. vill hindra andra än ägaren att komma åt
 en fil skriver man:
 \begin{example}
   lo-1\{e01nn\}: \textbf{chmod go= nisse}
@@ -1375,7 +1376,7 @@ För kataloger\index{katalog!filskydd} betyder filskyddet inte riktigt
 samma sak som för vanliga filer:
 \begin{description}
   \item[r] Tillstånd att läsa i katalogen, dvs se vilka filer som finns
-    i katalogen (t~ex med ls).
+    i katalogen (t.ex. med ls).
   \item[w] Tillstånd att skriva i katalogen, dvs skapa filer och ta bort
     filer. Det är katalogens rättigheter och inte filens som avgör om en
     användare kan ta bort en fil.
@@ -1442,7 +1443,7 @@ kontrolltecken (som man får fram om man håller nere tangenten
 kommandon i ett terminalfönster har dessa tecken (och en del andra) en
 speciell betydelse.
 
-Om man t~ex skriver fel så kan man använda nedanstående kommandon för
+Om man t.ex. skriver fel så kan man använda nedanstående kommandon för
 att rätta sina fel innan man trycker \emph{Return}:
 \begin{description}
   \item[Del] Det tecken man senast skrivit raderas. Med upprepade
@@ -1477,11 +1478,11 @@ Följande kontrolltecken är också bra att känna till:
   \item[Control-l] Tömmer hela terminalfönstret på text.
 \end{description}
 
-Vissa tangenter har extra symboler som t~ex \{ \} [ ] $\sim$. Dessa får
+Vissa tangenter har extra symboler som t.ex. \{ \} [ ] $\sim$. Dessa får
 man fram genom att hålla nere tangenten märkt \emph{Alt Gr}
-samtidigt som kan trycker på respektive tangent. För vissa tecken, t~ex $\sim$ (tilde),
+samtidigt som kan trycker på respektive tangent. För vissa tecken, t.ex. $\sim$ (tilde),
 behöver man också göra ett extra mellanslag innan tecknet visas, eftersom
-man också kan skriva en bokstav efter för att producera t~ex tecknen ã ñ õ.
+man också kan skriva en bokstav efter för att producera t.ex. tecknen ã ñ õ.
 
 \section{Alias}
 
@@ -1494,7 +1495,7 @@ Det får inte finnas några blanktecken före eller efter
 likhetstecknet. Om man skriver \emph{alias} utan argument får man en
 lista över alla alias som finns definierade.
 
-Om man t~ex vill kunna skriva \emph{dir} i stället för \emph{ls~-l}
+Om man t.ex. vill kunna skriva \emph{dir} i stället för \emph{ls~-l}
 kan man definiera ett alias:
 \begin{example}
   lo-1\{e01nn\}: \textbf{alias dir='ls -l'}
@@ -1561,7 +1562,7 @@ avsluta ett terminalfönster med \emph{Control-d} utan måste skriva
 %att riskera att de stör övriga inställningar, finns det ett
 %initieringskommando för varje institution. De har ett namn som inleds
 %med \emph{init} och avslutat med en förkortning för institutionen.
-%T~ex skriver man \ST{initcs} för att köra de initieringar som
+%t.ex. skriver man \ST{initcs} för att köra de initieringar som
 %behöver för kurser i Datavetenskap.
 %
 %Lägg absolut inte in dessa kommandon i \emindex{.zshrc} eller någon
@@ -1601,7 +1602,7 @@ För mer information om inloggning hemifrån, se nästa kapitel.
 Man kan ge ett program lite lägre prioritet genom att skriva
 \emindex{nice} först på kommandoraden. Det är att rekommendera om man
 kör program på någon annan dator än den som man sitter
-vid. För att t~ex räkna ord i en fil utan att störa andra på datorn så
+vid. För att t.ex. räkna ord i en fil utan att störa andra på datorn så
 mycket skriver man
 \begin{example}
   lo-1\{e01nn\}: \textbf{nice wc nisse}
@@ -1633,7 +1634,8 @@ Den första kolumnen visar processens nummer, och den sista det
 kommando man skrev.
 
 Om man vill ta bort en process som har hängt sig använder man
-kommandot \emindex{kill}. Om vi t~ex vill ta bort den process som kör
+kommandot \emindex{kill}, med processens nummer som argument.
+Om vi t.ex. vill ta bort den process som kör
 kalendern skriver vi:
 \begin{example}
   lo-1\{e01nn\}: \textbf{kill 10073}
@@ -1936,7 +1938,7 @@ Här är länkar till de olika sektionerna:
   till mycket, eller\ldots? Försök komma på ett tillfälle när den behövs.
   \begin{answer}
     Om man vill kopiera eller flytta en fil från en annan katalog
-    \emph{till} aktuell katalog utan att döpa om den skriver man t~ex:
+    \emph{till} aktuell katalog utan att döpa om den skriver man t.ex.:
     \begin{ttquote}
       cp adresser/nisse .
     \end{ttquote}
