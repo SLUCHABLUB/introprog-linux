@@ -97,11 +97,15 @@ if [[ -z "$MESSAGE" ]]; then
     echo "(Skriv ditt meddelande ovan. Ta inte bort sista raden.)"
     echo "---"
   } > "$tmpfile"
-  "${GIT_EDITOR:-${VISUAL:-vi}}" "$tmpfile"
+
+  EDITOR_CMD="${GIT_EDITOR:-${VISUAL:-${EDITOR:-nano}}}"
+  "$EDITOR_CMD" "$tmpfile"
+
   MESSAGE="$(sed '/^---$/,$d' "$tmpfile" | sed -e '${/^$/d}')"
   rm -f "$tmpfile"
   [[ -z "$MESSAGE" ]] && MESSAGE="Release $DATE"
 fi
+
 
 # Skapa annoterad tagg
 git tag -a "$TAG" -m "$MESSAGE"
